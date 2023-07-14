@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Details</title>
+</head>
+<body>
+<h1>Employee Details</h1>
+<div>
+    <p>ID: <span th:text="${employee.id}"></span></p>
+    <p>First Name: <span th:text="${employee.firstName}"></span></p>
+    <p>Last Name: <span th:text="${employee.lastName}"></span></p>
+    <p>Birth Date: <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>
+    <p>Passport photo:</p>
+    <div th:if="${employee.image != null}">
+        <img th:src="@{/employee/{id}/image(id=${employee.id})}" alt="Employee Image">
+    </div>
+    <div th:unless="${employee.image != null}">
+        <p>Aucune image</p>
+    </div>
+</div>
+<a href="/">Back to Employee List</a>
+</body>
+</html>
