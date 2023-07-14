@@ -1,11 +1,20 @@
-/* styles.css */
+/* employeeStyles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 h2 {
     color: #333;
+    margin-top: 0;
 }
 
 form {
@@ -21,19 +30,21 @@ label {
 input[type="text"],
 input[type="date"],
 input[type="file"] {
-    width: 200px;
-    padding: 5px;
+    width: 100%;
+    padding: 8px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    font-size: 14px;
 }
 
 button[type="submit"] {
-    padding: 8px 16px;
+    padding: 10px 20px;
     background-color: #4caf50;
     color: #fff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    font-size: 14px;
 }
 
 table {
@@ -44,13 +55,14 @@ table {
 
 th,
 td {
-    padding: 8px;
+    padding: 10px;
     text-align: left;
 }
 
 th {
     background-color: #333;
     color: #fff;
+    font-weight: bold;
 }
 
 tbody tr:nth-child(even) {
@@ -69,8 +81,4 @@ a {
 
 a:hover {
     text-decoration: underline;
-}
-
-img {
-    height: 50px;
 }

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href = "css/employeeStyles.css" rel = "stylesheet"/>
     <title>Employee Details</title>
 </head>
 <body>
@@ -9,6 +10,7 @@
 <div>
     <p>ID: <span th:text="${employee.id}"></span></p>
     <p>First Name: <span th:text="${employee.firstName}"></span></p>
+    <p>Ref: <span th:text="${employee.ref}"></span></p>
     <p>Last Name: <span th:text="${employee.lastName}"></span></p>
     <p>Birth Date: <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>
     <p>Passport photo:</p>

@@ -32,6 +32,7 @@
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
+        <th>Ref</th>
         <th>Birth Date</th>
         <th>passport photo</th>
     </tr>
@@ -40,6 +41,7 @@
     <tr th:each="employee : ${employees}">
         <td th:text="${employee.firstName}"></td>
         <td th:text="${employee.lastName}"></td>
+        <td th:text="${employee.ref}"></td>
         <td th:text="${employee.birthDate}"></td>
         <td th:if="${employee.image != null}">
             <img th:src="@{/employee/{id}/image(id=${employee.id})}" alt="Employee Image">
