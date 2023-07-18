@@ -3,7 +3,46 @@
 <head>
     <meta charset = "ISO-8859-1" />
     <link href = "css/styles.css" rel = "stylesheet"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <title>Employee Management</title>
+    <style>
+        body {
+            margin-bottom: 60px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 40px 0;
+        }
+
+        .logo {
+            max-width: 120px;
+            margin-bottom: 20px;
+        }
+
+        .info h4 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .info p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .phone {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 767px) {
+            .info {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+        }
+    </style>
 </head>
 <body>
 <h2>Add Employee</h2>
@@ -21,8 +60,6 @@
     <label for="birthDate">Birth Date:</label>
     <input type="date" id="birthDate" name="birthDate" th:field="*{birthDate}" required><br>
 
-
-
     <button type="submit">Add Employee</button>
 </form>
 
@@ -35,6 +72,7 @@
         <th>Ref</th>
         <th>Birth Date</th>
         <th>passport photo</th>
+        <th>action</th>
     </tr>
     </thead>
     <tbody>
@@ -55,5 +93,34 @@
     </tr>
     </tbody>
 </table>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 info">
+                <img src="chemin/vers/le/logo.png" alt="Logo de l'entreprise" class="logo">
+                <h4>Nom de l'entreprise</h4>
+                <p>Description de l'entreprise</p>
+                <p>Slogan</p>
+                <p>Adresse exacte</p>
+            </div>
+
+            <div class="col-md-4 info">
+                <h4>Contact</h4>
+                <p>Email de contact</p>
+                <p>Téléphones :</p>
+                <p class="phone">Numéro de téléphone 1</p>
+                <p class="phone">Numéro de téléphone 2</p>
+            </div>
+
+            <div class="col-md-4 info">
+                <h4>Identité fiscale</h4>
+                <p>NIF : Numéro NIF</p>
+                <p>STAT : Numéro STAT</p>
+                <p>RCS : Numéro RCS</p>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
