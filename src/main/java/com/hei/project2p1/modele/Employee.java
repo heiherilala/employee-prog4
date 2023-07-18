@@ -25,4 +25,8 @@ public class Employee {
     @Column(name = "image", columnDefinition = "bytea")
     private byte[] image;
     private String ref;
+    private String
+
+
+
 }

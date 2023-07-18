@@ -23,14 +23,14 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-    public class EmployeeController {
+public class EmployeeController {
 
     private final EmployeeService employeeService;
 
     @GetMapping(value = "/")
     public String index(HttpSession session, Model model) {
         List<Employee> employees = employeeService.getEmployees();
-        model.addAttribute("employees",employees);
+        model.addAttribute("employees", employees);
         model.addAttribute("employee", new Employee());
         return "index";
     }
@@ -62,7 +62,8 @@ import java.util.List;
     @ResponseBody
     public ResponseEntity<byte[]> getEmployeeImage(@PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        byte[] image = employee.getImage();;
+        byte[] image = employee.getImage();
+        ;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
         headers.setContentLength(image.length);
@@ -70,4 +71,4 @@ import java.util.List;
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 
-    }
+}
