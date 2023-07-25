@@ -10,7 +10,7 @@
 <div style="height: 80px;"></div> <!-- Hauteur équivalente à la hauteur du header (incluant la marge py-3) -->
 
 <h2>Add Employee</h2>
-<form th:action="@{/employeesAdd}" th:object="${createEmployee}" method="post" enctype="multipart/form-data">
+<form th:action="@{/employeesAdd}" th:object="${createEmployee}" method="post" enctype="multipart/form-data" id="employeeForm">
 
   <label for="ref">Id:</label>
   <input class="form-control-plaintext" type="text" id="id" name="id" th:value="${employee.id}" th:readonly="${true}"><br>
@@ -60,6 +60,22 @@
   <label for="childrenNumber">Children Number:</label>
   <input type="number" id="childrenNumber" name="childrenNumber" th:value="${employee.childrenNumber}"><br>
 
+  <div>
+    <!-- Phone numbers -->
+    <label for="phoneNumbers">Phone Numbers:</label>
+    <select id="phoneNumbers" multiple>
+      <!-- Dynamically added phone numbers will be listed here as options -->
+    </select>
+    <!-- Button to add a new phone number -->
+    <button type="button" onclick="addPhoneNumber()">Add Phone Number</button>
+    <!-- Hidden input field to store selected phone numbers for form submission -->
+    <input type="hidden" id="phoneNumbersInput" name="phoneNumbers">
+  </div>
+
+
+
+
+
   <label for="hireDate">Hire Date:</label>
   <input type="date" id="hireDate" name="hireDate" th:if="${employee.hireDate}" th:value="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}" ><br>
 
@@ -75,9 +91,36 @@
   <label for="cnapsNumber">CNAPS Number:</label>
   <input type="text" id="cnapsNumber" name="cnapsNumber" th:value="${employee.cnapsNumber}"><br>
 
-  <button type="submit">Add Employee</button>
+  <button type="button" onclick="submitForm()">Add Employee</button>
 </form>
 
 <div th:insert="fragments/footer :: footer"></div>
+<script>
+  function addPhoneNumber() {
+    // Get the value entered by the user
+    const phoneNumber = prompt("Please enter a phone number:");
+    if (phoneNumber) {
+      // Create a new option element for the select dropdown
+      const option = document.createElement("option");
+      option.value = phoneNumber;
+      option.text = phoneNumber;
+
+      // Add the option to the select dropdown
+      const phoneNumbersSelect = document.getElementById("phoneNumbers");
+      phoneNumbersSelect.appendChild(option);
+    }
+  }
+
+  // Form submission
+  function submitForm() {
+    // Copy selected phone numbers into a hidden input field in the form
+    const phoneNumbersSelect = document.getElementById("phoneNumbers");
+    const selectedPhoneNumbers = Array.from(phoneNumbersSelect.selectedOptions).map(option => option.value);
+    document.getElementById("phoneNumbersInput").value = selectedPhoneNumbers.join(',');
+
+    // Submit the form
+    document.getElementById("employeeForm").submit();
+  }
+</script>
 </body>
 </html>

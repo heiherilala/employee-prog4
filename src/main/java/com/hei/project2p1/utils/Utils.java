@@ -25,8 +25,9 @@ public class Utils {
             refIncrementations =  incrementationRepository.findAll();
         }
         RefIncrementation refIncrementation = refIncrementations.get(0);
-        refIncrementation.setInccremeentaionEmployee(refIncrementation.getInccremeentaionEmployee()+1);
-        incrementationRepository.save(refIncrementation);
+        incrementationRepository.incrementEmployeeRef();
+        //refIncrementation.setInccremeentaionEmployee(refIncrementation.getInccremeentaionEmployee()+1);
+        //incrementationRepository.save(refIncrementation);
         String refIncrementetion = "ref" + refIncrementation.getInccremeentaionEmployee();
         employee.setRef(refIncrementetion);
         return employee;
@@ -34,5 +35,14 @@ public class Utils {
     public static Date toDateYMD (String date) throws ParseException {
         Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
         return newDate;
+    }
+    public static String validateStringMy (String string) {
+        if (string == null) {
+            return null;
+        }
+        if (string.equals("")) {
+            return null;
+        }
+        return string;
     }
 }

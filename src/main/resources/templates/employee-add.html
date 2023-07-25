@@ -10,8 +10,7 @@
 <div style="height: 80px;"></div> <!-- Hauteur équivalente à la hauteur du header (incluant la marge py-3) -->
 
 <h2>Add Employee</h2>
-<form th:action="@{/employeesAdd}" th:object="${createEmployee}" method="post" enctype="multipart/form-data">
-
+<form th:action="@{/employeesAdd}" th:object="${createEmployee}" method="post" enctype="multipart/form-data" id="employeeForm">
   <label for="image">Image:</label>
   <input type="file" id="image" name="image"><br>
 
@@ -34,10 +33,10 @@
   <input type="text" id="address" name="address"><br>
 
   <label for="personalEmail">Personal Email:</label>
-  <input type="email" id="personalEmail" name="personalEmail" required><br>
+  <input type="email" id="personalEmail" name="personalEmail" ><br>
 
   <label for="professionalEmail">Professional Email :</label>
-  <input type="email" id="professionalEmail" name="professionalEmail" required><br>
+  <input type="email" id="professionalEmail" name="professionalEmail" ><br>
 
   <label for="cinNumber">CIN Number:</label>
   <input type="text" id="cinNumber" name="cinNumber"><br>
@@ -53,6 +52,17 @@
 
   <label for="childrenNumber">Children Number:</label>
   <input type="number" id="childrenNumber" name="childrenNumber"><br>
+  <div>
+    <!-- Phone numbers -->
+    <label for="phoneNumbers">Phone Numbers:</label>
+    <select id="phoneNumbers" multiple>
+      <!-- Dynamically added phone numbers will be listed here as options -->
+    </select>
+    <!-- Button to add a new phone number -->
+    <button type="button" onclick="addPhoneNumber()">Add Phone Number</button>
+    <!-- Hidden input field to store selected phone numbers for form submission -->
+    <input type="hidden" id="phoneNumbersInput" name="phoneNumbers">
+  </div>
 
   <label for="hireDate">Hire Date:</label>
   <input type="date" id="hireDate" name="hireDate"><br>
@@ -69,9 +79,36 @@
   <label for="cnapsNumber">CNAPS Number:</label>
   <input type="text" id="cnapsNumber" name="cnapsNumber"><br>
 
-  <button type="submit">Add Employee</button>
+  <button type="button" onclick="submitForm()">Add Employee</button>
 </form>
 
 <div th:insert="fragments/footer :: footer"></div>
+<script>
+  function addPhoneNumber() {
+    // Get the value entered by the user
+    const phoneNumber = prompt("Please enter a phone number:");
+    if (phoneNumber) {
+      // Create a new option element for the select dropdown
+      const option = document.createElement("option");
+      option.value = phoneNumber;
+      option.text = phoneNumber;
+
+      // Add the option to the select dropdown
+      const phoneNumbersSelect = document.getElementById("phoneNumbers");
+      phoneNumbersSelect.appendChild(option);
+    }
+  }
+
+  // Form submission
+  function submitForm() {
+    // Copy selected phone numbers into a hidden input field in the form
+    const phoneNumbersSelect = document.getElementById("phoneNumbers");
+    const selectedPhoneNumbers = Array.from(phoneNumbersSelect.selectedOptions).map(option => option.value);
+    document.getElementById("phoneNumbersInput").value = selectedPhoneNumbers.join(',');
+
+    // Submit the form
+    document.getElementById("employeeForm").submit();
+  }
+</script>
 </body>
 </html>

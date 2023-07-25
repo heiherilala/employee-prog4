@@ -11,6 +11,7 @@ import com.hei.project2p1.repository.dao.EmployeeDao;
 import com.hei.project2p1.utils.Utils;
 import com.hei.project2p1.validator.CreateEmployeeValidator;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import java.util.Date;
 import jdk.jshell.execution.Util;
 import lombok.AllArgsConstructor;
@@ -31,15 +32,6 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeDao employeeDao;
     private final Utils utils;
-    private final CreateEmployeeValidator createEmployeeValidator;
-    public List<Employee> getEmployeesFromSession(HttpSession session) {
-        List<Employee> employees = (List<Employee>) session.getAttribute("employees");
-        if (employees == null) {
-            employees = new ArrayList<>();
-            session.setAttribute("employees", employees);
-        }
-        return employees;
-    }
 
     public List<Employee> getEmpoyeesWithfilter ( String firsName,
                                                   String lastName,
@@ -70,12 +62,11 @@ public class EmployeeService {
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
-
+    @Transactional
     public List<Employee> saveEmployees(List<Employee> employees) {
-        createEmployeeValidator.accept(employees.get(0));
         return employeeRepository.saveAll(employees.stream().map(utils::addRef).collect(Collectors.toList()));
     }
-
+    @Transactional
     public Employee updateEmployee(Employee employee) {
         Employee updateEmployee  = employeeRepository.getById(employee.getId());
 // Assuming you have already created the updateEmployee object and retrieved the employee object from some source
@@ -126,7 +117,7 @@ public class EmployeeService {
             updateEmployee.setPosition(employee.getPosition());
         }
 
-        if (employee.getChildrenNumber() > 0) {
+        if (employee.getChildrenNumber() != null ) {
             updateEmployee.setChildrenNumber(employee.getChildrenNumber());
         }
 

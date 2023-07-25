@@ -8,9 +8,6 @@ import java.util.function.Consumer;
 @Component
 public class CreateEmployeeValidator implements Consumer<Employee> {
   @Override public void accept(Employee employee) {
-    if (employee.getRef() != null) {
-      throw new RuntimeException("Ref is automatic");
-    }
     if (employee.getFirstName() == null) {
       throw new RuntimeException("firstName not null");
     }

@@ -1,7 +1,8 @@
 package com.hei.project2p1.modele;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-
+@EqualsAndHashCode
 public class PageFromOne {
 
   @Getter

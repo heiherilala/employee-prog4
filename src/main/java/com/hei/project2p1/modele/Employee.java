@@ -17,6 +17,7 @@ import java.util.Date;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +36,7 @@ public class Employee {
     private Date cinCreateDate;
     private String cinCreatePlace;
     private String position;
-    private int childrenNumber;
+    private Integer childrenNumber;
     private Date hireDate;
     private Date departureDate;
     private String cnapsNumber;

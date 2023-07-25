@@ -34,7 +34,7 @@ public class EmployeeView {
     private Date cinCreateDate;
     private String cinCreatePlace;
     private String position;
-    private int childrenNumber;
+    private Integer childrenNumber;
     private Date hireDate;
     private Date departureDate;
     private String cnapsNumber;

@@ -21,19 +21,25 @@
         <p>Last Name: <span th:text="${employee.lastName}"></span></p>
         <p>Birth Date: <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>
         <p>Ref: <span th:text="${employee.ref}"></span></p>
-        <p>Sex: <span th:text="${employee.sex}"></span></p>
-        <p>Address: <span th:text="${employee.address}"></span></p>
-        <p>Personal Email: <span th:text="${employee.personalEmail}"></span></p>
-        <p>Professional Email: <span th:text="${employee.professionalEmail}"></span></p>
-        <p>CIN Number: <span th:text="${employee.cinNumber}"></span></p>
-        <p>CIN Create Date: <span th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></span></p>
-        <p>CIN Create Place: <span th:text="${employee.cinCreatePlace}"></span></p>
-        <p>Position: <span th:text="${employee.position}"></span></p>
-        <p>Children Number: <span th:text="${employee.childrenNumber}"></span></p>
-        <p>Hire Date: <span th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></span></p>
-        <p>Departure Date: <span th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></span></p>
-        <p>CSP: <span th:text="${employee.csp}"></span></p>
-        <p>CNAPS Number: <span th:text="${employee.cnapsNumber}"></span></p>
+        <p th:if="${employee.sex != null}">Sex: <span th:text="${employee.sex}"></span></p>
+        <p th:if="${employee.address != null}">Address: <span th:text="${employee.address}"></span></p>
+        <p th:if="${employee.personalEmail != null}">Personal Email: <span th:text="${employee.personalEmail}"></span></p>
+        <p th:if="${employee.professionalEmail != null}">Professional Email: <span th:text="${employee.professionalEmail}"></span></p>
+        <p th:if="${employee.cinNumber != null}">CIN Number: <span th:text="${employee.cinNumber}"></span></p>
+        <p th:if="${employee.cinCreateDate != null}">CIN Create Date: <span th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></span></p>
+        <p th:if="${employee.cinCreatePlace != null}">CIN Create Place: <span th:text="${employee.cinCreatePlace}"></span></p>
+        <p th:if="${employee.position != null}">Position: <span th:text="${employee.position}"></span></p>
+        <p th:if="${employee.childrenNumber != null}">Children Number: <span th:text="${employee.childrenNumber}"></span></p>
+        <p th:if="${employee.hireDate != null}">Hire Date: <span th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></span></p>
+        <p th:if="${employee.departureDate != null}">Departure Date: <span th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></span></p>
+        <p th:if="${employee.csp != null}">CSP: <span th:text="${employee.csp}"></span></p>
+        <p th:if="${employee.cnapsNumber != null}">CNAPS Number: <span th:text="${employee.cnapsNumber}"></span></p>
+        <div th:if="${!phoneNumbers.isEmpty()}">
+            <p>Phone Numbers: </p>
+            <tr th:each="phonNumber : ${phoneNumbers}">
+                <td th:text="${phonNumber.number}"></td>
+            </tr>
+        </div>
         <p>Passport photo:</p>
         <div th:if="${employee.image != null}">
             <!-- Utilisation de la chaîne de base64 pour afficher l'image avec une limite de hauteur -->

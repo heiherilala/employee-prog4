@@ -7,9 +7,12 @@ import com.hei.project2p1.mapper.type.FilterEmployee;
 import com.hei.project2p1.modele.BoundedPageSize;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.modele.PageFromOne;
+import com.hei.project2p1.modele.PhoneNumber;
 import com.hei.project2p1.service.EmployeeService;
+import com.hei.project2p1.service.PhonNumberService;
 import com.hei.project2p1.utils.Utils;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import java.util.Date;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -30,7 +33,7 @@ import java.util.List;
 public class EmployeeController {
     private final EmployeeMapper employeeMapper;
     private final EmployeeService employeeService;
-
+    private final PhonNumberService phonNumberService;
     @GetMapping(value = "/")
     public String index(HttpSession session, Model model) {
         List<EmployeeView> employees = employeeService.getEmployees().stream().map(employeeMapper::toView).collect(
@@ -136,7 +139,9 @@ public class EmployeeController {
     @GetMapping("/employees/{id}")
     public String showEmployeeDetails(@PathVariable("id") String id, Model model) {
         EmployeeView employee = employeeMapper.toView(employeeService.getEmployeeById(id));
+        List<PhoneNumber> phoneNumbers = phonNumberService.findAllByEmployee_Id(employee.getId());
         model.addAttribute("employee", employee);
+        model.addAttribute("phoneNumbers", phoneNumbers);
         return "employee-details";
     }
 
@@ -148,13 +153,21 @@ public class EmployeeController {
         return "employee-update";
     }
 
+    @Transactional
     @PostMapping("/employeesAdd")
-    public String addEmployee(@ModelAttribute("newEmployee") CreateEmployee createEmployee) throws ParseException, IOException {
+    public String addEmployee(
+        @ModelAttribute("newEmployee") CreateEmployee createEmployee,
+        @RequestParam("phoneNumbers") List<String> phoneNumbers,
+        Model model
+    ) throws ParseException, IOException {
         if (createEmployee.getId() == null || createEmployee.getId().equals("")) {
-            employeeService.saveEmployees(List.of(employeeMapper.toDomain(createEmployee)));
+            Employee newEmployee = employeeService.saveEmployees(List.of(employeeMapper.toDomain(createEmployee))).get(0);
+            phonNumberService.CreateManyPhoneNumber(phoneNumbers, newEmployee.getId(), null);
         } else {
             employeeService.updateEmployee(employeeMapper.toDomain(createEmployee));
+            phonNumberService.CreateManyPhoneNumber(phoneNumbers, createEmployee.getId(), null);
         }
+
         return "redirect:/employees";
     }
 

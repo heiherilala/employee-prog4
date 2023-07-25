@@ -11,6 +11,7 @@ import lombok.*;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class RefIncrementation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
