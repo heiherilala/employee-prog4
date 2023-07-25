@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>Employee Management</title>
+    <script>
+        function submitForm() {
+            document.getElementById("employeeSearchForm").submit();
+        }
+    </script>
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<div style="height: 80px;"></div> <!-- Hauteur équivalente à la hauteur du header (incluant la marge py-3) -->
+
+
+<div class="container mt-4">
+    <!-- Partie Formulaire de Recherche -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form id="employeeSearchForm" th:action="@{/employees}" method="get">
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" th:value="${filterEmployee.firsName}" onchange="submitForm()">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" th:value="${filterEmployee.lastName}">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="sex">Sex:</label>
+                        <select id="sex" name="sex" class="form-control" th:value="${filterEmployee.sex}" onchange="submitForm()">
+                            <option value="">-- Select --</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="position">Position:</label>
+                        <input type="text" id="position" name="position" class="form-control" th:value="${filterEmployee.position}" onchange="submitForm()">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="hireDateAfter">Hire Date After:</label>
+                        <input type="date" id="hireDateAfter" name="hireDateAfter" class="form-control" th:value="${#dates.format(filterEmployee.hireDateAfter, 'yyyy-MM-dd')}" onchange="submitForm()">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="hireDateBefore">Hire Date Before:</label>
+                        <input type="date" id="hireDateBefore" name="hireDateBefore" class="form-control" th:value="${#dates.format(filterEmployee.hireDateBefore, 'yyyy-MM-dd')}" onchange="submitForm()">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="departureDateAfter">Departure Date After:</label>
+                        <input type="date" id="departureDateAfter" name="departureDateAfter" class="form-control" th:value="${#dates.format(filterEmployee.departureDateAfter, 'yyyy-MM-dd')}" onchange="submitForm()">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="departureDateBefore">Departure Date Before:</label>
+                        <input type="date" id="departureDateBefore" name="departureDateBefore" class="form-control" th:value="${#dates.format(filterEmployee.departureDateBefore, 'yyyy-MM-dd')}" onchange="submitForm()">
+                    </div>
+                </div>
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="firstNameOrder">First Name Order:</label>
+                        <select id="firstNameOrder" name="firstNameOrder" onchange="submitForm()">
+                            <option value="">-- Select --</option>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="lastNameOrder">Last Name Order:</label>
+                        <select id="lastNameOrder" name="lastNameOrder" onchange="submitForm()">
+                            <option value="">-- Select --</option>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="sexOrder">Sex Order:</label>
+                        <select id="sexOrder" name="sexOrder" onchange="submitForm()">
+                            <option value="">-- Select --</option>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="positionOrder">Position Order:</label>
+                        <select id="positionOrder" name="positionOrder"  onchange="submitForm()">
+                            <option value="">-- Select --</option>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit">Filter</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+<h2>Employees</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Ref</th>
+            <th>Birth Date</th>
+            <th>Passport Photo</th>
+            <th class="d-none d-md-table-cell">Sex</th>
+            <th class="d-none d-lg-table-cell">Address</th>
+            <th class="d-none d-xl-table-cell">Personal Email</th>
+            <th class="d-none d-xl-table-cell">Professional Email</th>
+            <th class="d-none d-xl-table-cell">CIN Number</th>
+            <th class="d-none d-xl-table-cell">CIN Creation Date</th>
+            <th class="d-none d-xl-table-cell">CIN Creation Place</th>
+            <th class="d-none d-xl-table-cell">Position</th>
+            <th class="d-none d-xl-table-cell">Children Number</th>
+            <th class="d-none d-xl-table-cell">Hire Date</th>
+            <th class="d-none d-xl-table-cell">Departure Date</th>
+            <th class="d-none d-xl-table-cell">CSP</th>
+            <th class="d-none d-xl-table-cell">CNAPS Number</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.firstName}"></td>
+            <td th:text="${employee.lastName}"></td>
+            <td th:text="${employee.ref}"></td>
+            <td th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></td>
+            <td th:if="${employee.image != null}">
+                <img th:src="'data:image/png;base64,' + ${employee.image}"  alt="Photo" style="max-height: 50px;">
+            </td>
+            <td th:unless="${employee.image != null}">
+                <p>Aucune image</p>
+            </td>
+            <td class="d-none d-md-table-cell" th:text="${employee.sex}"></td>
+            <td class="d-none d-lg-table-cell" th:text="${employee.address}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.personalEmail}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.professionalEmail}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.cinNumber}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.cinCreatePlace}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.position}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.childrenNumber}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.csp}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.cnapsNumber}"></td>
+            <td>
+                <a class="btn btn-primary" th:href="@{/employees/{id}(id=${employee.id})}">View</a>
+                <a class="btn btn-primary" th:href="@{/employees/{id}/update(id=${employee.id})}">Modify</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:insert="fragments/footer :: footer"></div>
+
+</body>
+</html>

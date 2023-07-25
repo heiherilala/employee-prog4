@@ -1,126 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset = "ISO-8859-1" />
-    <link href = "css/styles.css" rel = "stylesheet"/>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <title>Employee Management</title>
-    <style>
-        body {
-            margin-bottom: 60px;
-        }
-
-        footer {
-            background-color: #f8f9fa;
-            padding: 40px 0;
-        }
-
-        .logo {
-            max-width: 120px;
-            margin-bottom: 20px;
-        }
-
-        .info h4 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .info p {
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .phone {
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        @media (max-width: 767px) {
-            .info {
-                text-align: center;
-                margin-bottom: 40px;
-            }
-        }
-    </style>
 </head>
 <body>
-<h2>Add Employee</h2>
-<form th:action="@{/addEmployee}" th:object="${employee}" method="post" enctype="multipart/form-data">
-
-    <label for="image">Image:</label>
-    <input type="file" id="image" name="image"><br>
-
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" name="firstName" th:field="*{firstName}" required><br>
-
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName" th:field="*{lastName}" required><br>
-
-    <label for="birthDate">Birth Date:</label>
-    <input type="date" id="birthDate" name="birthDate" th:field="*{birthDate}" required><br>
-
-    <button type="submit">Add Employee</button>
-</form>
+<div th:insert="fragments/header :: header"></div>
+<div style="height: 80px;"></div> <!-- Hauteur Ã©quivalente Ã  la hauteur du header (incluant la marge py-3) -->
 
 <h2>Employees</h2>
-<table>
-    <thead>
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Ref</th>
-        <th>Birth Date</th>
-        <th>passport photo</th>
-        <th>action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="employee : ${employees}">
-        <td th:text="${employee.firstName}"></td>
-        <td th:text="${employee.lastName}"></td>
-        <td th:text="${employee.ref}"></td>
-        <td th:text="${employee.birthDate}"></td>
-        <td th:if="${employee.image != null}">
-            <img th:src="@{/employee/{id}/image(id=${employee.id})}" alt="Employee Image">
-        </td>
-        <td th:unless="${employee.image != null}">
-            <p>Aucune image</p>
-        </td>
-        <td>
-            <a th:href="@{/employee/{id}(id=${employee.id})}">View</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Ref</th>
+            <th>Birth Date</th>
+            <th>Passport Photo</th>
+            <th class="d-none d-md-table-cell">Sex</th>
+            <th class="d-none d-lg-table-cell">Address</th>
+            <th class="d-none d-xl-table-cell">Personal Email</th>
+            <th class="d-none d-xl-table-cell">Professional Email</th>
+            <th class="d-none d-xl-table-cell">CIN Number</th>
+            <th class="d-none d-xl-table-cell">CIN Creation Date</th>
+            <th class="d-none d-xl-table-cell">CIN Creation Place</th>
+            <th class="d-none d-xl-table-cell">Position</th>
+            <th class="d-none d-xl-table-cell">Children Number</th>
+            <th class="d-none d-xl-table-cell">Hire Date</th>
+            <th class="d-none d-xl-table-cell">Departure Date</th>
+            <th class="d-none d-xl-table-cell">CSP</th>
+            <th class="d-none d-xl-table-cell">CNAPS Number</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.firstName}"></td>
+            <td th:text="${employee.lastName}"></td>
+            <td th:text="${employee.ref}"></td>
+            <td th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></td>
+            <td th:if="${employee.image != null}">
+                <img th:src="'data:image/png;base64,' + ${employee.image}"  alt="Photo" style="max-height: 50px;">
+            </td>
+            <td th:unless="${employee.image != null}">
+                <p>Aucune image</p>
+            </td>
+            <td class="d-none d-md-table-cell" th:text="${employee.sex}"></td>
+            <td class="d-none d-lg-table-cell" th:text="${employee.address}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.personalEmail}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.professionalEmail}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.cinNumber}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.cinCreatePlace}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.position}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.childrenNumber}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.csp}"></td>
+            <td class="d-none d-xl-table-cell" th:text="${employee.cnapsNumber}"></td>
+            <td>
+                <a class="btn btn-primary" th:href="@{/employees/{id}(id=${employee.id})}">View</a>
+                <a class="btn btn-primary" th:href="@{/employees/{id}/update(id=${employee.id})}">Modify</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 info">
-                <img src="chemin/vers/le/logo.png" alt="Logo de l'entreprise" class="logo">
-                <h4>Nom de l'entreprise</h4>
-                <p>Description de l'entreprise</p>
-                <p>Slogan</p>
-                <p>Adresse exacte</p>
-            </div>
+<div th:insert="fragments/footer :: footer"></div>
 
-            <div class="col-md-4 info">
-                <h4>Contact</h4>
-                <p>Email de contact</p>
-                <p>Téléphones :</p>
-                <p class="phone">Numéro de téléphone 1</p>
-                <p class="phone">Numéro de téléphone 2</p>
-            </div>
-
-            <div class="col-md-4 info">
-                <h4>Identité fiscale</h4>
-                <p>NIF : Numéro NIF</p>
-                <p>STAT : Numéro STAT</p>
-                <p>RCS : Numéro RCS</p>
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

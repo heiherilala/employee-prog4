@@ -4,6 +4,9 @@ import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.modele.RefIncrementation;
 import com.hei.project2p1.repository.IncrementationRepository;
 import com.hei.project2p1.validator.CreateEmployeeValidator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,5 +30,9 @@ public class Utils {
         String refIncrementetion = "ref" + refIncrementation.getInccremeentaionEmployee();
         employee.setRef(refIncrementetion);
         return employee;
+    }
+    public static Date toDateYMD (String date) throws ParseException {
+        Date newDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        return newDate;
     }
 }

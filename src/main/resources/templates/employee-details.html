@@ -1,26 +1,62 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
-    <link href = "css/employeeStyles.css" rel = "stylesheet"/>
-    <title>Employee Details</title>
+    <link href="css/employeeStyles.css" rel="stylesheet1"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>Employee Management</title>
 </head>
 <body>
-<h1>Employee Details</h1>
-<div>
-    <p>ID: <span th:text="${employee.id}"></span></p>
-    <p>First Name: <span th:text="${employee.firstName}"></span></p>
-    <p>Ref: <span th:text="${employee.ref}"></span></p>
-    <p>Last Name: <span th:text="${employee.lastName}"></span></p>
-    <p>Birth Date: <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>
-    <p>Passport photo:</p>
-    <div th:if="${employee.image != null}">
-        <img th:src="@{/employee/{id}/image(id=${employee.id})}" alt="Employee Image">
+<div th:insert="fragments/header :: header"></div>
+
+<!-- Ajout d'une marge équivalente à la hauteur du header -->
+<div style="height: 80px;"></div>
+
+<div class="container mt-4" >
+    <h1>Employee Details</h1>
+    <div>
+        <!-- Détails de l'employé ici -->
+        <p>ID: <span th:text="${employee.id}"></span></p>
+        <p>First Name: <span th:text="${employee.firstName}"></span></p>
+        <p>Last Name: <span th:text="${employee.lastName}"></span></p>
+        <p>Birth Date: <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>
+        <p>Ref: <span th:text="${employee.ref}"></span></p>
+        <p>Sex: <span th:text="${employee.sex}"></span></p>
+        <p>Address: <span th:text="${employee.address}"></span></p>
+        <p>Personal Email: <span th:text="${employee.personalEmail}"></span></p>
+        <p>Professional Email: <span th:text="${employee.professionalEmail}"></span></p>
+        <p>CIN Number: <span th:text="${employee.cinNumber}"></span></p>
+        <p>CIN Create Date: <span th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></span></p>
+        <p>CIN Create Place: <span th:text="${employee.cinCreatePlace}"></span></p>
+        <p>Position: <span th:text="${employee.position}"></span></p>
+        <p>Children Number: <span th:text="${employee.childrenNumber}"></span></p>
+        <p>Hire Date: <span th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></span></p>
+        <p>Departure Date: <span th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></span></p>
+        <p>CSP: <span th:text="${employee.csp}"></span></p>
+        <p>CNAPS Number: <span th:text="${employee.cnapsNumber}"></span></p>
+        <p>Passport photo:</p>
+        <div th:if="${employee.image != null}">
+            <!-- Utilisation de la chaîne de base64 pour afficher l'image avec une limite de hauteur -->
+            <img th:src="'data:image/png;base64,' + ${employee.image}" alt="Photo" class="img-fluid max-height-60">
+        </div>
+        <div th:unless="${employee.image != null}">
+            <p>Aucune image</p>
+        </div>
     </div>
-    <div th:unless="${employee.image != null}">
-        <p>Aucune image</p>
-    </div>
+    <a href="/">Back to Employee List</a>
 </div>
-<a href="/">Back to Employee List</a>
+
+<div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

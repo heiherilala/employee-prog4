@@ -1,10 +1,12 @@
 /* employeeStyles.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: red;
     margin: 0;
     padding: 0;
 }
+
+
 
 .container {
     max-width: 960px;
