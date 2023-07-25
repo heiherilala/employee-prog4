@@ -101,8 +101,19 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <button type="submit">Filter</button>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="page">Page :</label>
+                        <input type="text" id="page" name="page" class="form-control" th:value="${filterEmployee.page}" onchange="submitForm()">
+                        <label for="pageSize">Page zise:</label>
+                        <input type="text" id="pageSize" name="pageSize" class="form-control" th:value="${filterEmployee.pageSize}" onchange="submitForm()">
+                    </div>
+                </div>
 
-                <button type="submit">Filter</button>
+
             </form>
 
         </div>

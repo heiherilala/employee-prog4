@@ -40,7 +40,10 @@ public class Employee {
     private Date departureDate;
     private String cnapsNumber;
     @OneToMany(mappedBy = "employee")
-    private List<EmployeePhoneNumber> phoneNumbers;
+    private List<PhoneNumber> phoneNumbers;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
     @Enumerated(EnumType.STRING)
     private sex sex;
     private csp csp;

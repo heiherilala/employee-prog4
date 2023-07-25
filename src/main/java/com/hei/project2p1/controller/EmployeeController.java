@@ -150,10 +150,11 @@ public class EmployeeController {
 
     @PostMapping("/employeesAdd")
     public String addEmployee(@ModelAttribute("newEmployee") CreateEmployee createEmployee) throws ParseException, IOException {
-        if (createEmployee.getId() == null || createEmployee.getId() == "" ) {
+        if (createEmployee.getId() == null || createEmployee.getId().equals("")) {
             employeeService.saveEmployees(List.of(employeeMapper.toDomain(createEmployee)));
+        } else {
+            employeeService.updateEmployee(employeeMapper.toDomain(createEmployee));
         }
-        employeeService.updateEmployee(employeeMapper.toDomain(createEmployee));
         return "redirect:/employees";
     }
 

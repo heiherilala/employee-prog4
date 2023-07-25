@@ -16,4 +16,7 @@ public class RefIncrementation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private int inccremeentaionEmployee;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

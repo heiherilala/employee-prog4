@@ -17,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class EmployeeMapper {
   public Employee toDomain(CreateEmployee createEmployee) throws ParseException, IOException {
     Employee employee = Employee.builder()
-        .id(createEmployee.getId())
-        .ref(createEmployee.getRef())
         .birthDate(Utils.toDateYMD(createEmployee.getBirthDate()))
         .firstName(createEmployee.getFirstName())
         .lastName(createEmployee.getLastName())
@@ -37,6 +35,10 @@ public class EmployeeMapper {
         .position(createEmployee.getPosition())
         .image((createEmployee.getImage().getBytes()))
         .build();
+    if (createEmployee.getId() != null) {
+      employee.setId(createEmployee.getId());
+      employee.setRef(createEmployee.getRef());
+    }
     return employee;
   }
   public EmployeeView toView(Employee createEmployee) {
