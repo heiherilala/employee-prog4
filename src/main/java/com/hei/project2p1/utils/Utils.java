@@ -19,15 +19,15 @@ public class Utils {
     private final CreateEmployeeValidator createEmployeeValidator;
     public Employee addRef(Employee employee){
         createEmployeeValidator.accept(employee);
+        Integer refNumbur = incrementationRepository.findFirstInccremeentaionEmployee();
         List<RefIncrementation> refIncrementations =  incrementationRepository.findAll();
-        if (refIncrementations.isEmpty()){
+        if (refNumbur == null){
             incrementationRepository.save(RefIncrementation.builder().id("firstOne").inccremeentaionEmployee(0).build());
             refIncrementations =  incrementationRepository.findAll();
         }
         RefIncrementation refIncrementation = refIncrementations.get(0);
-        incrementationRepository.incrementEmployeeRef();
-        //refIncrementation.setInccremeentaionEmployee(refIncrementation.getInccremeentaionEmployee()+1);
-        //incrementationRepository.save(refIncrementation);
+        refIncrementation.setInccremeentaionEmployee(refIncrementation.getInccremeentaionEmployee()+1);
+        incrementationRepository.save(refIncrementation);
         String refIncrementetion = "ref" + refIncrementation.getInccremeentaionEmployee();
         employee.setRef(refIncrementetion);
         return employee;

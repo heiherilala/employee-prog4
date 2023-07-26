@@ -36,9 +36,9 @@
         <p th:if="${employee.cnapsNumber != null}">CNAPS Number: <span th:text="${employee.cnapsNumber}"></span></p>
         <div th:if="${!phoneNumbers.isEmpty()}">
             <p>Phone Numbers: </p>
-            <tr th:each="phonNumber : ${phoneNumbers}">
-                <td th:text="${phonNumber.number}"></td>
-            </tr>
+            <div th:each="phonNumber : ${phoneNumbers}" >
+                <div th:text="${phonNumber.number}"></div>
+            </div>
         </div>
         <p>Passport photo:</p>
         <div th:if="${employee.image != null}">

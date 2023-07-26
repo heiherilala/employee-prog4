@@ -48,6 +48,7 @@
   <label for="cinNumber">CIN Number:</label>
   <input type="text" id="cinNumber" name="cinNumber" th:value="${employee.cinNumber}"><br>
 
+
   <label for="cinCreateDate">CIN Create Date:</label>
   <input type="date" id="cinCreateDate" name="cinCreateDate" th:if="${employee.cinCreateDate}" th:value="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}" ><br>
 
@@ -61,17 +62,23 @@
   <input type="number" id="childrenNumber" name="childrenNumber" th:value="${employee.childrenNumber}"><br>
 
   <div>
-    <!-- Phone numbers -->
-    <label for="phoneNumbers">Phone Numbers:</label>
-    <select id="phoneNumbers" multiple>
-      <!-- Dynamically added phone numbers will be listed here as options -->
-    </select>
-    <!-- Button to add a new phone number -->
-    <button type="button" onclick="addPhoneNumber()">Add Phone Number</button>
-    <!-- Hidden input field to store selected phone numbers for form submission -->
-    <input type="hidden" id="phoneNumbersInput" name="phoneNumbers">
-  </div>
+    <!-- Conteneur pour afficher les numéros de téléphone -->
+    <div id="phoneNumbersContainer">
+      <div th:each="onePhoneNumber : ${employee.phoneNumbers}">
+        <label>Téléphone :</label>
+        <input type="checkbox" name="phoneNumbers" th:value="${onePhoneNumber.number}" checked>
+        <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
+        <span th:text="${onePhoneNumber.number}"></span>
+      </div>
+    </div>
 
+    <!-- Champ pour ajouter un nouveau numéro de téléphone manuellement -->
+    <div>
+      <label>Ajouter un numéro :</label>
+      <input type="text" name="newPhoneNumber">
+      <button type="button" onclick="addPhoneNumber()">Ajouter</button>
+    </div>
+  </div>
 
 
 
@@ -91,35 +98,31 @@
   <label for="cnapsNumber">CNAPS Number:</label>
   <input type="text" id="cnapsNumber" name="cnapsNumber" th:value="${employee.cnapsNumber}"><br>
 
-  <button type="button" onclick="submitForm()">Add Employee</button>
+  <button type="submit">Add employee</button>
 </form>
 
 <div th:insert="fragments/footer :: footer"></div>
 <script>
   function addPhoneNumber() {
-    // Get the value entered by the user
-    const phoneNumber = prompt("Please enter a phone number:");
-    if (phoneNumber) {
-      // Create a new option element for the select dropdown
-      const option = document.createElement("option");
-      option.value = phoneNumber;
-      option.text = phoneNumber;
-
-      // Add the option to the select dropdown
-      const phoneNumbersSelect = document.getElementById("phoneNumbers");
-      phoneNumbersSelect.appendChild(option);
+    var container = document.getElementById("phoneNumbersContainer");
+    var newPhoneNumberInput = document.querySelector('input[name="newPhoneNumber"]');
+    var newPhoneNumberValue = newPhoneNumberInput.value.trim();
+    if (newPhoneNumberValue !== '') {
+      var newPhoneNumber = document.createElement("div");
+      newPhoneNumber.innerHTML = `
+        <label>Téléphone :</label>
+        <input type="checkbox" name="phoneNumbers" value="${newPhoneNumberValue}" checked>
+        <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
+        <label>"${newPhoneNumberValue}"</label>
+      `;
+      container.appendChild(newPhoneNumber);
+      newPhoneNumberInput.value = ''; // Réinitialiser le champ pour le prochain numéro
     }
   }
 
-  // Form submission
-  function submitForm() {
-    // Copy selected phone numbers into a hidden input field in the form
-    const phoneNumbersSelect = document.getElementById("phoneNumbers");
-    const selectedPhoneNumbers = Array.from(phoneNumbersSelect.selectedOptions).map(option => option.value);
-    document.getElementById("phoneNumbersInput").value = selectedPhoneNumbers.join(',');
-
-    // Submit the form
-    document.getElementById("employeeForm").submit();
+  function removePhoneNumber(button) {
+    var phoneNumberDiv = button.parentNode;
+    phoneNumberDiv.remove();
   }
 </script>
 </body>

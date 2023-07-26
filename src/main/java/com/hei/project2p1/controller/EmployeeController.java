@@ -160,6 +160,7 @@ public class EmployeeController {
         @RequestParam("phoneNumbers") List<String> phoneNumbers,
         Model model
     ) throws ParseException, IOException {
+        System.out.println(createEmployee);
         if (createEmployee.getId() == null || createEmployee.getId().equals("")) {
             Employee newEmployee = employeeService.saveEmployees(List.of(employeeMapper.toDomain(createEmployee))).get(0);
             phonNumberService.CreateManyPhoneNumber(phoneNumbers, newEmployee.getId(), null);

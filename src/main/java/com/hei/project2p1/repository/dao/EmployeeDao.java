@@ -34,7 +34,8 @@ public class EmployeeDao {
       predicates.add(
           builder.or(
               builder.like(builder.lower(root.get("firstName")), "%" + firstName + "%"),
-              builder.like(root.get("firstName"), "%" + firstName + "%")
+              builder.like(root.get("firstName"), "%" + firstName + "%"),
+              builder.isNull(root.get("firstName"))
           )
       );
     }
@@ -43,7 +44,8 @@ public class EmployeeDao {
       predicates.add(
           builder.or(
               builder.like(builder.lower(root.get("lastName")), "%" + lastName + "%"),
-              builder.like(root.get("lastName"), "%" + lastName + "%")
+              builder.like(root.get("lastName"), "%" + lastName + "%"),
+              builder.isNull(root.get("lastName"))
           )
       );
     }
@@ -51,7 +53,8 @@ public class EmployeeDao {
     if (sex != null) {
       predicates.add(
           builder.or(
-              builder.equal(root.get("sex"), sex )
+              builder.equal(root.get("sex"), sex ),
+              builder.isNull(root.get("sex"))
           )
       );
     }
@@ -60,7 +63,8 @@ public class EmployeeDao {
       predicates.add(
           builder.or(
               builder.like(builder.lower(root.get("position")), "%" + position + "%"),
-              builder.like(root.get("position"), "%" + position + "%")
+              builder.like(root.get("position"), "%" + position + "%"),
+              builder.isNull(root.get("position"))
           )
       );
     }

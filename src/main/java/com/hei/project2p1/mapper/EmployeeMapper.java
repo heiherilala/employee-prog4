@@ -4,12 +4,14 @@ import com.hei.project2p1.mapper.type.CreateEmployee;
 import com.hei.project2p1.mapper.type.EmployeeView;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.repository.EmployeeRepository;
+import com.hei.project2p1.repository.PhonNumberRepository;
 import com.hei.project2p1.utils.Utils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Component;
@@ -19,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class EmployeeMapper {
   private final EmployeeRepository employeeRepository;
-
+  private final PhonNumberRepository phonNumberRepository;
   public Employee toDomain(CreateEmployee createEmployee) throws ParseException, IOException {
     Employee employee = Employee.builder()
         .firstName(Utils.validateStringMy(createEmployee.getFirstName()))
@@ -34,7 +36,6 @@ public class EmployeeMapper {
         .personalEmail(Utils.validateStringMy(createEmployee.getPersonalEmail()))
         .professionalEmail(Utils.validateStringMy(createEmployee.getProfessionalEmail()))
         .position(Utils.validateStringMy(createEmployee.getPosition()))
-        .phoneNumbers((createEmployee.getPhoneNumbers()))
         .build();
     if (!createEmployee.getImage().isEmpty()) {
       employee.setImage(createEmployee.getImage().getBytes());
@@ -81,6 +82,8 @@ public class EmployeeMapper {
     employeeView.setProfessionalEmail(Utils.validateStringMy(createEmployee.getProfessionalEmail()));
     employeeView.setPosition(Utils.validateStringMy(createEmployee.getPosition()));
     employeeView.setImage(Base64.encodeBase64String(createEmployee.getImage()));
+    employeeView.setPhoneNumbers(createEmployee.getPhoneNumbers().stream().map(a -> a.getNumber()).collect(
+        Collectors.toList()));
     return employeeView;
   }
 

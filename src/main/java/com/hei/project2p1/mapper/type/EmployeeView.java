@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,4 +41,5 @@ public class EmployeeView {
     private String cnapsNumber;
     private String sex;
     private String csp;
+    private List<String> phoneNumbers;
 }

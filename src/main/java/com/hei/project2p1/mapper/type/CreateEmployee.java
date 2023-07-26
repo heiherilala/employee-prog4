@@ -32,5 +32,5 @@ public class CreateEmployee {
   private String cnapsNumber;
   private String sex;
   private String csp;
-  private List<PhoneNumber> phoneNumbers;
+  private List<String> phoneNumbers;
 }

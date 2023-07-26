@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IncrementationRepository extends JpaRepository<RefIncrementation, String> {
-  @Query(
-      value = "update ref_incrementetion set inccremeentaion_employee = inccremeentaion_employee + 1 ",
-      nativeQuery = true)
-  void incrementEmployeeRef();
+  @Query(value = "SELECT inccremeentaion_employee FROM ref_incrementetion ORDER BY inccremeentaion_employee ASC LIMIT 1", nativeQuery = true)
+  Integer findFirstInccremeentaionEmployee();
 }
