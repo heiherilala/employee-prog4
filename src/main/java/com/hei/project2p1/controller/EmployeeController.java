@@ -1,13 +1,16 @@
 package com.hei.project2p1.controller;
 
 import com.hei.project2p1.mapper.EmployeeMapper;
+import com.hei.project2p1.mapper.toCsv.ToCSVConvertisor;
 import com.hei.project2p1.mapper.type.CreateEmployee;
 import com.hei.project2p1.mapper.type.EmployeeView;
 import com.hei.project2p1.mapper.type.FilterEmployee;
 import com.hei.project2p1.modele.BoundedPageSize;
+import com.hei.project2p1.modele.Company;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.modele.PageFromOne;
 import com.hei.project2p1.modele.PhoneNumber;
+import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
 import com.hei.project2p1.service.PhonNumberService;
 import com.hei.project2p1.utils.Utils;
@@ -16,6 +19,7 @@ import jakarta.transaction.Transactional;
 import java.util.Date;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,6 +38,15 @@ public class EmployeeController {
     private final EmployeeMapper employeeMapper;
     private final EmployeeService employeeService;
     private final PhonNumberService phonNumberService;
+    private CompanyService companyService;
+
+    @GetMapping("/company")
+    public String viewCompanyDetails(Model model) {
+        Company company = companyService.getByOne();
+        model.addAttribute("company", company);
+
+        return "company-details";
+    }
     @GetMapping(value = "/")
     public String index(HttpSession session, Model model) {
         List<EmployeeView> employees = employeeService.getEmployees().stream().map(employeeMapper::toView).collect(
@@ -60,6 +73,9 @@ public class EmployeeController {
                          @RequestParam(name = "page", required = false) Integer page,
                          @RequestParam(name = "pageSize", required = false) Integer pageSize,
                          Model model) throws ParseException {
+        Company company = companyService.getByOne();
+        model.addAttribute("company", company);
+
         FilterEmployee filterEmployee = new FilterEmployee();
         filterEmployee.setFirsName(firstName);
         filterEmployee.setSex(sex);
@@ -130,9 +146,110 @@ public class EmployeeController {
         return "filtered";
     }
 
+    @GetMapping(value = "/employeesConvertion")
+    public ResponseEntity<ByteArrayResource> employeesConvertion(HttpSession session,
+                         @RequestParam(name = "firstName", required = false) String firstName,
+                         @RequestParam(name = "lastName", required = false) String lastName,
+                         @RequestParam(name = "sex", required = false) String sex,
+                         @RequestParam(name = "position", required = false) String position,
+                         @RequestParam(name = "hireDateAfter", required = false) String hireDateAfter,
+                         @RequestParam(name = "hireDateBefore", required = false) String hireDateBefore,
+                         @RequestParam(name = "departureDateAfter", required = false) String departureDateAfter,
+                         @RequestParam(name = "departureDateBefore", required = false) String departureDateBefore,
+                         @RequestParam(name = "firstNameOrder", required = false) String firstNameOrder,
+                         @RequestParam(name = "lastNameOrder", required = false) String lastNameOrder,
+                         @RequestParam(name = "sexOrder", required = false) String sexOrder,
+                         @RequestParam(name = "positionOrder", required = false) String positionOrder,
+                         @RequestParam(name = "page", required = false) Integer page,
+                         @RequestParam(name = "pageSize", required = false) Integer pageSize,
+                         Model model) throws ParseException {
+
+        FilterEmployee filterEmployee = new FilterEmployee();
+        filterEmployee.setFirsName(firstName);
+        filterEmployee.setSex(sex);
+        filterEmployee.setLastName(lastName);
+        filterEmployee.setPosition(position);
+        filterEmployee.setPage(1);
+        filterEmployee.setPageSize(10);
+        PageFromOne pageFromOne = new PageFromOne(1);
+        BoundedPageSize boundedPageSize = new BoundedPageSize(10);
+        Employee.sex sex1Enum  = null;
+        Date hireDateAfterDate = null;
+        Date hireDateBeforeDate = null;
+        Date departureDateAfterDate = null;
+        Date departureDateBeforeDate = null;
+        if (hireDateAfter != null ) {
+            if (!hireDateAfter.isEmpty()) {
+                hireDateAfterDate  = Utils.toDateYMD(hireDateAfter);
+                filterEmployee.setHireDateAfter(Utils.toDateYMD(hireDateAfter));
+            }
+        }
+        if (hireDateBefore != null ) {
+            if (!hireDateBefore.isEmpty()) {
+                hireDateBeforeDate  = Utils.toDateYMD(hireDateBefore);
+                filterEmployee.setHireDateBefore(Utils.toDateYMD(hireDateBefore));
+            }
+        }
+        if (departureDateAfter != null ) {
+            if (!departureDateAfter.isEmpty()) {
+                departureDateAfterDate  = Utils.toDateYMD(departureDateAfter);
+                filterEmployee.setDepartureDateAfter(Utils.toDateYMD(departureDateAfter));
+            }
+        }
+        if (departureDateBefore != null ) {
+            if (!departureDateBefore.isEmpty()) {
+                departureDateBeforeDate  = Utils.toDateYMD(departureDateBefore);
+                filterEmployee.setDepartureDateBefore(Utils.toDateYMD(departureDateBefore));
+            }
+        }
+        if (page != null) {
+            filterEmployee.setPage(page);
+            pageFromOne = new PageFromOne(page);
+        }
+        if (pageSize != null) {
+            filterEmployee.setPageSize(pageSize);
+            boundedPageSize = new BoundedPageSize(pageSize);
+        }
+        if (sex != null){
+            if (sex.equals("M")) {
+                sex1Enum = Employee.sex.valueOf(sex);
+            }
+            if (sex.equals("F")) {
+                sex1Enum = Employee.sex.valueOf(sex);
+            }
+        }
+
+        model.addAttribute("filterEmployee", filterEmployee);
+        List<EmployeeView> employeesView = employeeService.getEmpoyeesWithfilter(
+                firstName, lastName, sex1Enum, position, hireDateAfterDate, hireDateBeforeDate,
+                departureDateAfterDate, departureDateBeforeDate, firstNameOrder,
+                lastNameOrder, sexOrder, positionOrder , pageFromOne, boundedPageSize
+            ).stream()
+            .map(employeeMapper::toView).collect(
+                Collectors.toList());
+
+        List<EmployeeView> employees = employeesView;
+        employees = employees.stream().map(a->Utils.deletImage(a)).collect(Collectors.toList());
+        String convertedString = ToCSVConvertisor.ObjectListToCsv(employees);
+
+        byte[] convertedBytes = convertedString.getBytes();
+        ByteArrayResource resource = new ByteArrayResource(convertedBytes);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=employeesDelailsList.csv");
+
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentType(MediaType.parseMediaType("text/csv"))
+            .body(resource);
+    }
+
+
     @GetMapping("/employees/create")
     public String addEmployeeUI(Model model) {
         model.addAttribute("createEmployee", new CreateEmployee());
+        Company company = companyService.getByOne();
+        model.addAttribute("company", company);
         return "employee-add";
     }
 
@@ -142,6 +259,8 @@ public class EmployeeController {
         List<PhoneNumber> phoneNumbers = phonNumberService.findAllByEmployee_Id(employee.getId());
         model.addAttribute("employee", employee);
         model.addAttribute("phoneNumbers", phoneNumbers);
+        Company company = companyService.getByOne();
+        model.addAttribute("company", company);
         return "employee-details";
     }
 
@@ -150,6 +269,8 @@ public class EmployeeController {
         Employee employee = employeeService.getEmployeeById(id);
         model.addAttribute("createEmployee", new CreateEmployee());
         model.addAttribute("employee", employee);
+        Company company = companyService.getByOne();
+        model.addAttribute("company", company);
         return "employee-update";
     }
 
@@ -168,6 +289,8 @@ public class EmployeeController {
             employeeService.updateEmployee(employeeMapper.toDomain(createEmployee));
             phonNumberService.CreateManyPhoneNumber(phoneNumbers, createEmployee.getId(), null);
         }
+        Company company = companyService.getByOne();
+        model.addAttribute("company", company);
 
         return "redirect:/employees";
     }

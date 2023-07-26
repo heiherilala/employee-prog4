@@ -1,28 +1,55 @@
-<!-- footer.html -->
+<!--&lt;!&ndash; footer.html &ndash;&gt;-->
+<!--<footer class="position-relative w-100 bg-light py-4 mb-4 ">-->
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-4 info">-->
+<!--                <img src="path/to/the/logo.png" alt="Company Logo" class="logo">-->
+<!--                <h4>Company Name</h4>-->
+<!--                <p>Company Description</p>-->
+<!--                <p>Slogan</p>-->
+<!--                <p>Exact Address</p>-->
+<!--            </div>-->
+
+<!--            <div class="col-md-4 info">-->
+<!--                <h4>Contact</h4>-->
+<!--                <p>Contact Email</p>-->
+<!--                <p>Phones:</p>-->
+<!--                <p class="phone">Phone Number 1</p>-->
+<!--                <p class="phone">Phone Number 2</p>-->
+<!--            </div>-->
+
+<!--            <div class="col-md-4 info">-->
+<!--                <h4>Fiscal Identity</h4>-->
+<!--                <p>NIF: Tax Identification Number</p>-->
+<!--                <p>STAT: STAT Number</p>-->
+<!--                <p>RCS: RCS Number</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</footer>-->
 <footer class="position-relative w-100 bg-light py-4 mb-4 ">
     <div class="container">
         <div class="row">
             <div class="col-md-4 info">
-                <img src="path/to/the/logo.png" alt="Company Logo" class="logo">
-                <h4>Company Name</h4>
-                <p>Company Description</p>
-                <p>Slogan</p>
-                <p>Exact Address</p>
+                <img th:if="${company.logo}" th:src="@{path/to/the/logo.png}" alt="Company Logo" class="logo">
+                <h4 th:text="${company.name}">Company Name</h4>
+                <p th:text="${company.description}">Company Description</p>
+                <p th:text="${company.slogan}">Slogan</p>
+                <p th:text="${company.address}">Exact Address</p>
             </div>
 
             <div class="col-md-4 info">
                 <h4>Contact</h4>
-                <p>Contact Email</p>
+                <p th:text="${company.email}">Contact Email</p>
                 <p>Phones:</p>
-                <p class="phone">Phone Number 1</p>
-                <p class="phone">Phone Number 2</p>
+                <p class="phone" th:each="phoneNumber : ${company.phoneNumbers}" th:text="${phoneNumber.number}"></p>
             </div>
 
             <div class="col-md-4 info">
                 <h4>Fiscal Identity</h4>
-                <p>NIF: Tax Identification Number</p>
-                <p>STAT: STAT Number</p>
-                <p>RCS: RCS Number</p>
+                <p th:text="'NIF: ' + ${company.nif}">Tax Identification Number</p>
+                <p th:text="'STAT: ' + ${company.stat}">STAT Number</p>
+                <p th:text="'RCS: ' + ${company.rcs}">RCS Number</p>
             </div>
         </div>
     </div>

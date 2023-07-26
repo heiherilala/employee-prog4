@@ -90,10 +90,19 @@
   <input type="date" id="departureDate" name="departureDate" th:if="${employee.departureDate}" th:value="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}" ><br>
 
   <label for="csp">CSP:</label>
-  <select id="csp" name="csp" th:value="${employee.csp}">
-    <option value="M1_1A">M2_1B</option>
+  <select id="csp" name="csp">
     <option value="M1_1A">M1_1A</option>
+    <option value="M2_1B">M2_1B</option>
+    <option value="OS1_2A">OS1_2A</option>
+    <option value="OS2_2B">OS2_2B</option>
+    <option value="OS3_3">OS3_3</option>
+    <option value="OP1">OP1</option>
+    <option value="OP1A_3B">OP1A_3B</option>
+    <option value="OP1B_4A">OP1B_4A</option>
+    <option value="OP2B_5A">OP2B_5A</option>
+    <option value="OP3_5B">OP3_5B</option>
   </select><br>
+
 
   <label for="cnapsNumber">CNAPS Number:</label>
   <input type="text" id="cnapsNumber" name="cnapsNumber" th:value="${employee.cnapsNumber}"><br>

@@ -9,6 +9,12 @@
             document.getElementById("employeeSearchForm").submit();
         }
     </script>
+    <style>
+        /* Hide the form with id="employeeSearchFormCsv" */
+        #employeeSearchFormCsv {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -112,9 +118,124 @@
                         <input type="text" id="pageSize" name="pageSize" class="form-control" th:value="${filterEmployee.pageSize}" onchange="submitForm()">
                     </div>
                 </div>
+            </form>
+
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <button type="button" onclick="toggleCsvForm()">Export to CSV</button>
+                </div>
+            </div>
+            <form id="employeeSearchFormCsv" th:action="@{/employeesConvertion}" method="get">
+                <div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="firstNameCSV">First Name:</label>
+                            <input type="text" id="firstNameCSV" name="firstName" class="form-control" th:value="${filterEmployee.firsName}" onchange="submitForm()">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="lastNameCSV">Last Name:</label>
+                            <input type="text" id="lastNameCSV" name="lastName" class="form-control" th:value="${filterEmployee.lastName}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="sexCSV">Sex:</label>
+                            <select id="sexCSV" name="sex" class="form-control" th:value="${filterEmployee.sex}" onchange="submitForm()">
+                                <option value="">-- Select --</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="positionCSV">Position:</label>
+                            <input type="text" id="positionCSV" name="position" class="form-control" th:value="${filterEmployee.position}" onchange="submitForm()">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="hireDateAfterCSV">Hire Date After:</label>
+                            <input type="date" id="hireDateAfterCSV" name="hireDateAfter" class="form-control" th:value="${#dates.format(filterEmployee.hireDateAfter, 'yyyy-MM-dd')}" onchange="submitForm()">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="hireDateBeforeCSV">Hire Date Before:</label>
+                            <input type="date" id="hireDateBeforeCSV" name="hireDateBefore" class="form-control" th:value="${#dates.format(filterEmployee.hireDateBefore, 'yyyy-MM-dd')}" onchange="submitForm()">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="departureDateAfterCSV">Departure Date After:</label>
+                            <input type="date" id="departureDateAfterCSV" name="departureDateAfter" class="form-control" th:value="${#dates.format(filterEmployee.departureDateAfter, 'yyyy-MM-dd')}" onchange="submitForm()">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="departureDateBeforeCSV">Departure Date Before:</label>
+                            <input type="date" id="departureDateBeforeCSV" name="departureDateBefore" class="form-control" th:value="${#dates.format(filterEmployee.departureDateBefore, 'yyyy-MM-dd')}" onchange="submitForm()">
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="firstNameOrderCSV">First Name Order:</label>
+                            <select id="firstNameOrderCSV" name="firstNameOrder" onchange="submitForm()">
+                                <option value="">-- Select --</option>
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="lastNameOrderCSV">Last Name Order:</label>
+                            <select id="lastNameOrderCSV" name="lastNameOrder" onchange="submitForm()">
+                                <option value="">-- Select --</option>
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="sexOrderCSV">Sex Order:</label>
+                            <select id="sexOrderCSV" name="sexOrder" onchange="submitForm()">
+                                <option value="">-- Select --</option>
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="positionOrderCSV">Position Order:</label>
+                            <select id="positionOrderCSV" name="positionOrder"  onchange="submitForm()">
+                                <option value="">-- Select --</option>
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-6">
+                            <label for="pageCSV">Page :</label>
+                            <input type="text" id="pageCSV" name="page" class="form-control" th:value="${filterEmployee.page}" onchange="submitForm()">
+                            <label for="pageSizeCSV">Page zise:</label>
+                            <input type="text" id="pageSizeCSV" name="pageSize" class="form-control" th:value="${filterEmployee.pageSize}" onchange="submitForm()">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <button type="submit">Download CSV</button>
+                        </div>
+                    </div>
+                </div>
 
 
             </form>
+
+
+
+
+
+
+
+
+
+
+
 
         </div>
     </div>
@@ -183,6 +304,20 @@
 </div>
 
 <div th:insert="fragments/footer :: footer"></div>
+<!-- ... existing JavaScript code ... -->
+
+<script>
+    function toggleCsvForm() {
+        var csvForm = document.getElementById("employeeSearchFormCsv");
+        if (csvForm.style.display === "none") {
+            csvForm.style.display = "block";
+        } else {
+            csvForm.style.display = "none";
+        }
+    }
+
+    // ... existing JavaScript code ...
+</script>
 
 </body>
 </html>

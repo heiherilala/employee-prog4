@@ -1,5 +1,6 @@
 package com.hei.project2p1.utils;
 
+import com.hei.project2p1.mapper.type.EmployeeView;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.modele.RefIncrementation;
 import com.hei.project2p1.repository.IncrementationRepository;
@@ -44,5 +45,11 @@ public class Utils {
             return null;
         }
         return string;
+    }
+
+    public static EmployeeView deletImage (EmployeeView employee){
+        EmployeeView newEmployeeView  = employee;
+        newEmployeeView.setImage(null);
+        return newEmployeeView;
     }
 }
