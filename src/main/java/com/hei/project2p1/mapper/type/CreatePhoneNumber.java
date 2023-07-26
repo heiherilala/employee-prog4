@@ -11,4 +11,5 @@ public class CreatePhoneNumber {
   private String number;
   private String employeeId;
   private String companyId;
+  private String numberCode;
 }

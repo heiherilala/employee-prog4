@@ -41,6 +41,7 @@ public class CompanyService {
             .address("123 Rue de la République")
             .email("contact@monentreprise.com")
             .stat("0123456789")
+
             .rcs("987654321")
             .phoneNumbers(new ArrayList<>())
             .build();

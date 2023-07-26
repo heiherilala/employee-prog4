@@ -82,7 +82,7 @@ public class EmployeeMapper {
     employeeView.setProfessionalEmail(Utils.validateStringMy(createEmployee.getProfessionalEmail()));
     employeeView.setPosition(Utils.validateStringMy(createEmployee.getPosition()));
     employeeView.setImage(Base64.encodeBase64String(createEmployee.getImage()));
-    employeeView.setPhoneNumbers(createEmployee.getPhoneNumbers().stream().map(a -> a.getNumber()).collect(
+    employeeView.setPhoneNumbers(createEmployee.getPhoneNumbers().stream().map(a -> " - " + a.getNumberCode()+ " " + a.getNumber()).collect(
         Collectors.toList()));
     return employeeView;
   }

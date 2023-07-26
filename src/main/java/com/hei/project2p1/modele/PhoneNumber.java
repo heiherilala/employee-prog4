@@ -35,4 +35,5 @@ public class PhoneNumber {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+    private String numberCode;
 }

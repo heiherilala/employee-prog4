@@ -37,7 +37,7 @@
         <div th:if="${!phoneNumbers.isEmpty()}">
             <p>Phone Numbers: </p>
             <div th:each="phonNumber : ${phoneNumbers}" >
-                <div th:text="${phonNumber.number}"></div>
+                <samp th:text="${ phonNumber.numberCode}"></samp><samp th:text="${ phonNumber.number}"></samp>
             </div>
         </div>
         <p>Passport photo:</p>

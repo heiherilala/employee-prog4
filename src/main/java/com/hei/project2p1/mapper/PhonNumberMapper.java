@@ -23,6 +23,7 @@ public class PhonNumberMapper {
     PhoneNumber phoneNumber = PhoneNumber.builder()
         .id(createPhoneNumber.getId())
         .number(createPhoneNumber.getNumber())
+        .numberCode(createPhoneNumber.getNumberCode())
         .build();
     if (createPhoneNumber.getId() == null) {
       PhoneNumber phoneNumberForId = new PhoneNumber();
@@ -36,29 +37,5 @@ public class PhonNumberMapper {
     }
     return phoneNumber;
   }
-  public EmployeeView toView(Employee createEmployee) {
-    EmployeeView employeeView = new EmployeeView();
-    employeeView.setId((createEmployee.getId()));
-    employeeView.setRef(createEmployee.getRef());
-    employeeView.setBirthDate((createEmployee.getBirthDate()));
-    employeeView.setFirstName(createEmployee.getFirstName());
-    employeeView.setLastName(createEmployee.getLastName());
-    employeeView.setAddress(createEmployee.getAddress());
-    employeeView.setCsp((createEmployee.getCsp().toString()));
-    employeeView.setCinCreateDate((createEmployee.getCinCreateDate()));
-    employeeView.setCinCreatePlace(createEmployee.getCinCreatePlace());
-    employeeView.setCinNumber(createEmployee.getCinNumber());
-    employeeView.setChildrenNumber(createEmployee.getChildrenNumber());
-    employeeView.setCnapsNumber(createEmployee.getCnapsNumber());
-    employeeView.setSex((createEmployee.getSex().toString()));
-    employeeView.setHireDate((createEmployee.getHireDate()));
-    employeeView.setDepartureDate((createEmployee.getDepartureDate()));
-    employeeView.setPersonalEmail(createEmployee.getPersonalEmail());
-    employeeView.setProfessionalEmail(createEmployee.getProfessionalEmail());
-    employeeView.setPosition(createEmployee.getPosition());
-    employeeView.setImage(Base64.encodeBase64String(createEmployee.getImage()));
-    return employeeView;
-  }
-
 
 }
