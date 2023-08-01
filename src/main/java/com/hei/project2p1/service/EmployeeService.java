@@ -44,6 +44,7 @@ public class EmployeeService {
                                                   String firstNameOrder,
                                                   String lastNameOrder,
                                                   String sexOrder,
+                                                  String numberCode,
                                                   String positionOrder,
                                                   PageFromOne page,
                                                   BoundedPageSize pageSize) {
@@ -54,7 +55,7 @@ public class EmployeeService {
         return employeeDao.findByCriteria(
             firsName, lastName, sex, position,
             hireDateBefore, hireDateAfter, departureDateAfter, departureDateBefore,
-            firstNameOrder, lastNameOrder, sexOrder, positionOrder,
+            firstNameOrder, lastNameOrder, sexOrder, numberCode, positionOrder,
             pageable
         );
     }
@@ -85,7 +86,7 @@ public class EmployeeService {
             updateEmployee.setLastName(employee.getLastName());
         }
 
-        if (!employee.getImage().equals(updateEmployee.getImage())) {
+        if (employee.getImage() != null && employee.getImage().length != 0) {
             updateEmployee.setImage(employee.getImage());
         }
 

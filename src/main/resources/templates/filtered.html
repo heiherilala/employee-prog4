@@ -36,7 +36,7 @@
                         <input type="text" id="lastName" name="lastName" class="form-control" th:value="${filterEmployee.lastName}">
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label for="sex">Sex:</label>
                         <select id="sex" name="sex" class="form-control" th:value="${filterEmployee.sex}" onchange="submitForm()">
                             <option value="">-- Select --</option>
@@ -44,9 +44,13 @@
                             <option value="F">Female</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <label for="position">Position:</label>
                         <input type="text" id="position" name="position" class="form-control" th:value="${filterEmployee.position}" onchange="submitForm()">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="numberCode">Number code :</label>
+                        <input type="text" id="numberCode" name="numberCode" class="form-control" th:value="${filterEmployee.numberCode}" onchange="submitForm()">
                     </div>
                 </div>
                 <div class="form-row">
@@ -257,6 +261,7 @@
             <th class="d-none d-lg-table-cell">Address</th>
             <th class="d-none d-xl-table-cell">Personal Email</th>
             <th class="d-none d-xl-table-cell">Professional Email</th>
+<!--            <th class="d-none d-xl-table-cell">phone numbers</th>-->
             <th class="d-none d-xl-table-cell">CIN Number</th>
             <th class="d-none d-xl-table-cell">CIN Creation Date</th>
             <th class="d-none d-xl-table-cell">CIN Creation Place</th>
@@ -285,6 +290,9 @@
             <td class="d-none d-lg-table-cell" th:text="${employee.address}"></td>
             <td class="d-none d-xl-table-cell" th:text="${employee.personalEmail}"></td>
             <td class="d-none d-xl-table-cell" th:text="${employee.professionalEmail}"></td>
+<!--            <td class="d-none d-xl-table-cell" th:each="phonNumber : ${employee.phoneNumbers}">-->
+<!--                <div><samp th:text="${phonNumber}"></samp></div>-->
+<!--            </td>-->
             <td class="d-none d-xl-table-cell" th:text="${employee.cinNumber}"></td>
             <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></td>
             <td class="d-none d-xl-table-cell" th:text="${employee.cinCreatePlace}"></td>

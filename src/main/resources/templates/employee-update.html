@@ -40,10 +40,10 @@
   <input type="text" id="address" name="address" th:value="${employee.address}"><br>
 
   <label for="personalEmail">Personal Email:</label>
-  <input type="email" id="personalEmail" name="personalEmail"  th:value="${employee.personalEmail}" required><br>
+  <input type="email" id="personalEmail" name="personalEmail"  th:value="${employee.personalEmail}" ><br>
 
   <label for="professionalEmail">Professional Email :</label>
-  <input type="email" id="professionalEmail" name="professionalEmail" th:value="${employee.professionalEmail}" required><br>
+  <input type="email" id="professionalEmail" name="professionalEmail" th:value="${employee.professionalEmail}" ><br>
 
   <label for="cinNumber">CIN Number:</label>
   <input type="text" id="cinNumber" name="cinNumber" th:value="${employee.cinNumber}"><br>
@@ -64,17 +64,20 @@
   <div>
     <!-- Conteneur pour afficher les numéros de téléphone -->
     <div id="phoneNumbersContainer">
+
       <div th:each="onePhoneNumber : ${employee.phoneNumbers}">
         <label>Téléphone :</label>
-        <input type="checkbox" name="phoneNumbers" th:value="${onePhoneNumber.number}" checked>
+        <input type="checkbox" name="phoneNumbers" th:value="${onePhoneNumber.numberCode + ';' + onePhoneNumber.number}" checked>
         <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
-        <span th:text="${onePhoneNumber.number}"></span>
+        <span th:text="${'code : ' + onePhoneNumber.numberCode + '; number : ' + onePhoneNumber.number}"></span>
       </div>
     </div>
 
     <!-- Champ pour ajouter un nouveau numéro de téléphone manuellement -->
     <div>
-      <label>Ajouter un numéro :</label>
+      <label>Code pays :</label>
+      <input type="text" name="newPhoneNumberCode">
+      <label>numéro :</label>
       <input type="text" name="newPhoneNumber">
       <button type="button" onclick="addPhoneNumber()">Ajouter</button>
     </div>
@@ -114,18 +117,21 @@
 <script>
   function addPhoneNumber() {
     var container = document.getElementById("phoneNumbersContainer");
+    var newPhoneNumberCodeInput = document.querySelector('input[name="newPhoneNumberCode"]');
+    var newPhoneNumberCodeValue = newPhoneNumberCodeInput.value.trim();
     var newPhoneNumberInput = document.querySelector('input[name="newPhoneNumber"]');
     var newPhoneNumberValue = newPhoneNumberInput.value.trim();
-    if (newPhoneNumberValue !== '') {
+    if (newPhoneNumberValue !== '') {newPhoneNumberValue
       var newPhoneNumber = document.createElement("div");
       newPhoneNumber.innerHTML = `
         <label>Téléphone :</label>
-        <input type="checkbox" name="phoneNumbers" value="${newPhoneNumberValue}" checked>
+        <input type="checkbox" name="phoneNumbers" value="${newPhoneNumberCodeValue};${newPhoneNumberValue}" checked>
         <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
-        <label>"${newPhoneNumberValue}"</label>
+        <label>"cede : ${newPhoneNumberCodeValue};  : ${newPhoneNumberValue}"</label>
       `;
       container.appendChild(newPhoneNumber);
       newPhoneNumberInput.value = ''; // Réinitialiser le champ pour le prochain numéro
+      newPhoneNumberCodeInput.value = ''; // Réinitialiser le champ pour le prochain numéro
     }
   }
 

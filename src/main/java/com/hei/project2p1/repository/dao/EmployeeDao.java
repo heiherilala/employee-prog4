@@ -1,9 +1,12 @@
 package com.hei.project2p1.repository.dao;
 
 import com.hei.project2p1.modele.Employee;
+import com.hei.project2p1.modele.PhoneNumber;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -22,13 +25,23 @@ public class EmployeeDao {
   public List<Employee> findByCriteria(
       String firstName, String lastName, Employee.sex sex, String position,
       Date hireDateAfter , Date hireDateBefore, Date departureDateAfter, Date departureDateBefore,
-      String firstNameOrder, String lastNameOrder, String sexOrder, String positionOrder,
-      Pageable pageable
+      String firstNameOrder, String lastNameOrder, String sexOrder, String numberCode,
+      String positionOrder, Pageable pageable
   ){
     CriteriaBuilder builder  = entityManager.getCriteriaBuilder();
     CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
     Root<Employee> root = query.from(Employee.class);
+    Join<PhoneNumber, Employee> phoneNumber = root.join("phoneNumbers" , JoinType.LEFT);
     List<Predicate> predicates = new ArrayList<>();
+
+    if (numberCode != null) {
+      predicates.add(
+          builder.or(
+              builder.like(builder.lower(phoneNumber.get("numberCode")), "%" + numberCode + "%"),
+              builder.like(phoneNumber.get("numberCode"), "%" + numberCode + "%")
+          )
+      );
+    }
 
     if (firstName != null) {
       predicates.add(
@@ -100,7 +113,7 @@ public class EmployeeDao {
           )
       );
     }
-    query.where(builder.and(predicates.toArray(new Predicate[0])));
+    query.distinct(true).where(builder.and(predicates.toArray(new Predicate[0])));
 
 
     Order firstNameSortOrder = getOrder(root, builder, firstNameOrder, "firstName");

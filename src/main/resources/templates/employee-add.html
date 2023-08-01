@@ -60,7 +60,9 @@
 
     <!-- Champ pour ajouter un nouveau numéro de téléphone manuellement -->
     <div>
-      <label>Ajouter un numéro :</label>
+      <label>Code pays :</label>
+      <input type="text" name="newPhoneNumberCode">
+      <label>numéro :</label>
       <input type="text" name="newPhoneNumber">
       <button type="button" onclick="addPhoneNumber()">Ajouter</button>
     </div>
@@ -97,18 +99,21 @@
 <script>
   function addPhoneNumber() {
     var container = document.getElementById("phoneNumbersContainer");
+    var newPhoneNumberCodeInput = document.querySelector('input[name="newPhoneNumberCode"]');
+    var newPhoneNumberCodeValue = newPhoneNumberCodeInput.value.trim();
     var newPhoneNumberInput = document.querySelector('input[name="newPhoneNumber"]');
     var newPhoneNumberValue = newPhoneNumberInput.value.trim();
-    if (newPhoneNumberValue !== '') {
+    if (newPhoneNumberValue !== '') {newPhoneNumberValue
       var newPhoneNumber = document.createElement("div");
       newPhoneNumber.innerHTML = `
         <label>Téléphone :</label>
-        <input type="checkbox" name="phoneNumbers" value="${newPhoneNumberValue}" readonly>
+        <input type="checkbox" name="phoneNumbers" value="${newPhoneNumberCodeValue};${newPhoneNumberValue}" checked>
         <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
-        <label>"${newPhoneNumberValue}"</label>
+        <label>"${newPhoneNumberCodeValue};${newPhoneNumberValue}"</label>
       `;
       container.appendChild(newPhoneNumber);
       newPhoneNumberInput.value = ''; // Réinitialiser le champ pour le prochain numéro
+      newPhoneNumberCodeInput.value = ''; // Réinitialiser le champ pour le prochain numéro
     }
   }
 

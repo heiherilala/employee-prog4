@@ -23,6 +23,7 @@ public class FilterEmployee {
   String firstNameOrder;
   String lastNameOrder;
   String sexOrder;
+  String numberCode;
   String positionOrder;
   Integer page;
   Integer pageSize;

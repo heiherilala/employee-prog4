@@ -3,6 +3,7 @@ package com.hei.project2p1.service;
 import com.hei.project2p1.mapper.PhonNumberMapper;
 import com.hei.project2p1.mapper.type.CreatePhoneNumber;
 import com.hei.project2p1.modele.PhoneNumber;
+import com.hei.project2p1.modele.type.PhoneNumberWithCode;
 import com.hei.project2p1.repository.CompanyRepository;
 import com.hei.project2p1.repository.EmployeeRepository;
 import com.hei.project2p1.repository.PhonNumberRepository;
@@ -22,20 +23,20 @@ public class PhonNumberService {
     private final CompanyRepository companyRepository;
     private final PhonNumberMapper phonNumberMapper;
     @Transactional
-    public PhoneNumber CreateOnePhoneNumber (String number , String employeeId, String companyId)
+    public PhoneNumber CreateOnePhoneNumber (String number, String numberCode , String employeeId, String companyId)
         throws ParseException, IOException {
-        List<PhoneNumber> phoneNumbersToCheque = phonNumberRepository.findAllByNumber(number);
+        List<PhoneNumber> phoneNumbersToCheque = phonNumberRepository.findAllByNumberAndNumberCode(number, numberCode);
         for (PhoneNumber phoneNumber:phoneNumbersToCheque) {
             if (employeeId != null) {
                 if (phoneNumber.getCompany()!=null){ throw new RuntimeException("the pone number is used "); }
                 if (phoneNumber.getEmployee()!=null){
                     if(phoneNumber.getEmployee().getId() != employeeId){
-                        throw new RuntimeException("the pone number is used ");
+                        throw new RuntimeException("the phone number is used ");
                     }}
             } else if (companyId != null) {
                 if (phoneNumber.getCompany()!=null){
                     if(!phoneNumber.getCompany().getId().equalsIgnoreCase(companyId)){
-                        throw new RuntimeException("the pone number is used ");
+                        throw new RuntimeException("the phone number is used ");
                     }}
                 if (phoneNumber.getEmployee()!=null){ throw new RuntimeException("the pone number is used "); }
             }
@@ -43,6 +44,7 @@ public class PhonNumberService {
 
         CreatePhoneNumber createPhoneNumber = new CreatePhoneNumber();
         createPhoneNumber.setNumber(number);
+        createPhoneNumber.setNumberCode(numberCode);
         createPhoneNumber.setEmployeeId(employeeId);
         createPhoneNumber.setCompanyId(companyId);
 
@@ -51,7 +53,8 @@ public class PhonNumberService {
         return phonNumberRepository.save(addPhoneNumber);
     }
     @Transactional
-    public List<PhoneNumber> CreateManyPhoneNumber (List<String> numbers, String employeeId, String companyId){
+    public List<PhoneNumber> CreateManyPhoneNumber (List<PhoneNumberWithCode> phoneNumberWithCodes, String employeeId, String companyId){
+        System.out.println(phoneNumberWithCodes);
         if (companyId == null) {
             List<PhoneNumber> phoneNumberToDelete = phonNumberRepository.findAllByEmployee(employeeRepository.getReferenceById(employeeId));
 
@@ -61,9 +64,9 @@ public class PhonNumberService {
             List<PhoneNumber> phoneNumberToDelete = phonNumberRepository.findAllByCompany_Id(companyId);
             phonNumberRepository.deleteAll(phoneNumberToDelete);
         }
-        return numbers.stream().map(number -> {
+        return phoneNumberWithCodes.stream().map(phoneNumberWithCode -> {
             try {
-                return CreateOnePhoneNumber(number, employeeId, companyId);
+                return CreateOnePhoneNumber(phoneNumberWithCode.getNumber(),phoneNumberWithCode.getNumberCode(), employeeId, companyId);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {

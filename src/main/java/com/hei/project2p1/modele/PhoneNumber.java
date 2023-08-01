@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -16,7 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "\"phone_number\"")
+@Table(name = "\"phone_number\"", uniqueConstraints = {@UniqueConstraint(name = "phone_number_with_code_constraint", columnNames = {"number", "numberCode"})})
 @Getter
 @Setter
 @ToString

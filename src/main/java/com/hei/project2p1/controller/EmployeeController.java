@@ -10,12 +10,14 @@ import com.hei.project2p1.modele.Company;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.modele.PageFromOne;
 import com.hei.project2p1.modele.PhoneNumber;
+import com.hei.project2p1.modele.type.PhoneNumberWithCode;
 import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
 import com.hei.project2p1.service.PhonNumberService;
 import com.hei.project2p1.utils.Utils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -70,6 +72,7 @@ public class EmployeeController {
                          @RequestParam(name = "lastNameOrder", required = false) String lastNameOrder,
                          @RequestParam(name = "sexOrder", required = false) String sexOrder,
                          @RequestParam(name = "positionOrder", required = false) String positionOrder,
+                         @RequestParam(name = "numberCode", required = false) String numberCode,
                          @RequestParam(name = "page", required = false) Integer page,
                          @RequestParam(name = "pageSize", required = false) Integer pageSize,
                          Model model) throws ParseException {
@@ -80,6 +83,7 @@ public class EmployeeController {
         filterEmployee.setFirsName(firstName);
         filterEmployee.setSex(sex);
         filterEmployee.setLastName(lastName);
+        filterEmployee.setNumberCode(numberCode);
         filterEmployee.setPosition(position);
         filterEmployee.setPage(1);
         filterEmployee.setPageSize(10);
@@ -137,7 +141,7 @@ public class EmployeeController {
         List<EmployeeView> employees = employeeService.getEmpoyeesWithfilter(
             firstName, lastName, sex1Enum, position, hireDateAfterDate, hireDateBeforeDate,
                 departureDateAfterDate, departureDateBeforeDate, firstNameOrder,
-                lastNameOrder, sexOrder, positionOrder , pageFromOne, boundedPageSize
+                lastNameOrder, sexOrder, numberCode, positionOrder, pageFromOne, boundedPageSize
             ).stream()
             .map(employeeMapper::toView).collect(
             Collectors.toList());
@@ -160,6 +164,7 @@ public class EmployeeController {
                          @RequestParam(name = "lastNameOrder", required = false) String lastNameOrder,
                          @RequestParam(name = "sexOrder", required = false) String sexOrder,
                          @RequestParam(name = "positionOrder", required = false) String positionOrder,
+                         @RequestParam(name = "numberCode", required = false) String numberCode,
                          @RequestParam(name = "page", required = false) Integer page,
                          @RequestParam(name = "pageSize", required = false) Integer pageSize,
                          Model model) throws ParseException {
@@ -223,7 +228,7 @@ public class EmployeeController {
         List<EmployeeView> employeesView = employeeService.getEmpoyeesWithfilter(
                 firstName, lastName, sex1Enum, position, hireDateAfterDate, hireDateBeforeDate,
                 departureDateAfterDate, departureDateBeforeDate, firstNameOrder,
-                lastNameOrder, sexOrder, positionOrder , pageFromOne, boundedPageSize
+                lastNameOrder, sexOrder,  numberCode, positionOrder,  pageFromOne, boundedPageSize
             ).stream()
             .map(employeeMapper::toView).collect(
                 Collectors.toList());
@@ -281,13 +286,20 @@ public class EmployeeController {
         @RequestParam("phoneNumbers") List<String> phoneNumbers,
         Model model
     ) throws ParseException, IOException {
+        List<PhoneNumberWithCode> phoneNumberWithCodes = new ArrayList<>();
+        for (String phoneNumber: phoneNumbers) {
+            String[] phoneNumberList = phoneNumber.split(";");
+            String numberCodePart = phoneNumberList[0];
+            String numberPhonePart = phoneNumberList[1];
+            phoneNumberWithCodes.add(new PhoneNumberWithCode(numberPhonePart,numberCodePart));
+        }
         System.out.println(createEmployee);
         if (createEmployee.getId() == null || createEmployee.getId().equals("")) {
             Employee newEmployee = employeeService.saveEmployees(List.of(employeeMapper.toDomain(createEmployee))).get(0);
-            phonNumberService.CreateManyPhoneNumber(phoneNumbers, newEmployee.getId(), null);
+            phonNumberService.CreateManyPhoneNumber(phoneNumberWithCodes, newEmployee.getId(), null);
         } else {
             employeeService.updateEmployee(employeeMapper.toDomain(createEmployee));
-            phonNumberService.CreateManyPhoneNumber(phoneNumbers, createEmployee.getId(), null);
+            phonNumberService.CreateManyPhoneNumber(phoneNumberWithCodes, createEmployee.getId(), null);
         }
         Company company = companyService.getByOne();
         model.addAttribute("company", company);

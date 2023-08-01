@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PhonNumberRepository extends JpaRepository<PhoneNumber, String> {
-  List<PhoneNumber> findAllByNumber(String number);
+  List<PhoneNumber> findAllByNumberAndNumberCode(String number, String numberCode);
   List<PhoneNumber> findAllByCompany_Id(String companyId);
   List<PhoneNumber> findAllByEmployee(Employee employee);
 
