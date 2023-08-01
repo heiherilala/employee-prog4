@@ -34,31 +34,29 @@ public class EmployeeDao {
     Join<PhoneNumber, Employee> phoneNumber = root.join("phoneNumbers" , JoinType.LEFT);
     List<Predicate> predicates = new ArrayList<>();
 
-    if (numberCode != null) {
+    if (numberCode != null && numberCode != "") {
       predicates.add(
           builder.or(
-              builder.like(builder.lower(phoneNumber.get("numberCode")), "%" + numberCode + "%"),
+              builder.like(builder.lower(phoneNumber.get("numberCode")), "%" + numberCode.toLowerCase() + "%"),
               builder.like(phoneNumber.get("numberCode"), "%" + numberCode + "%")
           )
       );
     }
 
-    if (firstName != null) {
+    if (firstName != null && firstName != "") {
       predicates.add(
           builder.or(
-              builder.like(builder.lower(root.get("firstName")), "%" + firstName + "%"),
-              builder.like(root.get("firstName"), "%" + firstName + "%"),
-              builder.isNull(root.get("firstName"))
+              builder.like(builder.lower(root.get("firstName")), "%" + firstName.toLowerCase() + "%"),
+              builder.like(root.get("firstName"), "%" + firstName + "%")
           )
       );
     }
 
-    if (lastName != null) {
+    if (lastName != null && lastName != "") {
       predicates.add(
           builder.or(
-              builder.like(builder.lower(root.get("lastName")), "%" + lastName + "%"),
-              builder.like(root.get("lastName"), "%" + lastName + "%"),
-              builder.isNull(root.get("lastName"))
+              builder.like(builder.lower(root.get("lastName")), "%" + lastName.toLowerCase() + "%"),
+              builder.like(root.get("lastName"), "%" + lastName + "%")
           )
       );
     }
@@ -72,12 +70,11 @@ public class EmployeeDao {
       );
     }
 
-    if (position != null) {
+    if (position != null && position != "") {
       predicates.add(
           builder.or(
-              builder.like(builder.lower(root.get("position")), "%" + position + "%"),
-              builder.like(root.get("position"), "%" + position + "%"),
-              builder.isNull(root.get("position"))
+              builder.like(builder.lower(root.get("position")), "%" + position.toLowerCase() + "%"),
+              builder.like(root.get("position"), "%" + position + "%")
           )
       );
     }
