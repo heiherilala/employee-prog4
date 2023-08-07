@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class PhonNumberService {
                 if (phoneNumber.getCompany()!=null){ throw new RuntimeException("the pone number is used "); }
                 if (phoneNumber.getEmployee()!=null){
                     if(phoneNumber.getEmployee().getId() != employeeId){
-                        throw new RuntimeException("the phone number is used ");
+                        throw new RuntimeException("the phone number" + phoneNumber.getNumberCode() + phoneNumber.getNumber() + "is used ");
                     }}
             } else if (companyId != null) {
                 if (phoneNumber.getCompany()!=null){
@@ -40,7 +42,22 @@ public class PhonNumberService {
                     }}
                 if (phoneNumber.getEmployee()!=null){ throw new RuntimeException("the pone number is used "); }
             }
+            if (phoneNumber.getNumber().length() != 10) {
+                throw new RuntimeException("the phone number length have to be 10, but yours is : " + phoneNumber.getNumber().length());
+            }
         }
+
+        if (number.length() != 10) {
+            throw new RuntimeException("the phone number length have to be 10, but yours is : " + number.length() );
+        }
+
+        String regexPattern = "^[a-zA-Z0-9]+$"; // Regex pour alphanumérique (lettres minuscules, majuscules et chiffres)
+
+        // Créez un objet Pattern en utilisant le regexPattern
+        Pattern pattern = Pattern.compile(regexPattern);
+
+        // Créez un objet Matcher en utilisant la chaîne d'entrée et le Pattern
+        Matcher matcher = pattern.matcher(number);
 
         CreatePhoneNumber createPhoneNumber = new CreatePhoneNumber();
         createPhoneNumber.setNumber(number);

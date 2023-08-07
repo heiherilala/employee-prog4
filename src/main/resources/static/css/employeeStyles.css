@@ -1,7 +1,7 @@
 /* employeeStyles.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: red;
+    background-color: red !important;
     margin: 0;
     padding: 0;
 }

@@ -1,75 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <meta charset = "ISO-8859-1" />
+    <link href = "css/styles.css" rel = "stylesheet"/>
     <title>Employee Management</title>
 </head>
 <body>
-<div th:insert="fragments/header :: header"></div>
-<div style="height: 80px;"></div> <!-- Hauteur équivalente à la hauteur du header (incluant la marge py-3) -->
+<h2>Loging</h2>
+<form th:action="@{/loging}" method="post">
+    <label for="username">First Name:</label>
+    <input type="text" id="username" name="username" required><br>
 
-<h2>Employees</h2>
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Ref</th>
-            <th>Birth Date</th>
-            <th>Passport Photo</th>
-            <th class="d-none d-md-table-cell">Sex</th>
-            <th class="d-none d-lg-table-cell">Address</th>
-            <th class="d-none d-xl-table-cell">Personal Email</th>
-            <th class="d-none d-xl-table-cell">Professional Email</th>
-            <th class="d-none d-xl-table-cell">CIN Number</th>
-            <th class="d-none d-xl-table-cell">CIN Creation Date</th>
-            <th class="d-none d-xl-table-cell">CIN Creation Place</th>
-            <th class="d-none d-xl-table-cell">Position</th>
-            <th class="d-none d-xl-table-cell">Children Number</th>
-            <th class="d-none d-xl-table-cell">Hire Date</th>
-            <th class="d-none d-xl-table-cell">Departure Date</th>
-            <th class="d-none d-xl-table-cell">CSP</th>
-            <th class="d-none d-xl-table-cell">CNAPS Number</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="employee : ${employees}">
-            <td th:text="${employee.firstName}"></td>
-            <td th:text="${employee.lastName}"></td>
-            <td th:text="${employee.ref}"></td>
-            <td th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></td>
-            <td th:if="${employee.image != null}">
-                <img th:src="'data:image/png;base64,' + ${employee.image}"  alt="Photo" style="max-height: 50px;">
-            </td>
-            <td th:unless="${employee.image != null}">
-                <p>Aucune image</p>
-            </td>
-            <td class="d-none d-md-table-cell" th:text="${employee.sex}"></td>
-            <td class="d-none d-lg-table-cell" th:text="${employee.address}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.personalEmail}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.professionalEmail}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.cinNumber}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.cinCreatePlace}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.position}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.childrenNumber}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.csp}"></td>
-            <td class="d-none d-xl-table-cell" th:text="${employee.cnapsNumber}"></td>
-            <td>
-                <a class="btn btn-primary" th:href="@{/employees/{id}(id=${employee.id})}">View</a>
-                <a class="btn btn-primary" th:href="@{/employees/{id}/update(id=${employee.id})}">Modify</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
 
-<div th:insert="fragments/footer :: footer"></div>
-
+    <button type="submit">Loging</button>
+</form>
 </body>
 </html>

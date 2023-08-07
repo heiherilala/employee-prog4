@@ -10,13 +10,16 @@ import com.hei.project2p1.modele.Company;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.modele.PageFromOne;
 import com.hei.project2p1.modele.PhoneNumber;
+import com.hei.project2p1.modele.SessionUser;
 import com.hei.project2p1.modele.type.PhoneNumberWithCode;
 import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
 import com.hei.project2p1.service.PhonNumberService;
+import com.hei.project2p1.service.SessionUserService;
 import com.hei.project2p1.utils.Utils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -40,7 +43,8 @@ public class EmployeeController {
     private final EmployeeMapper employeeMapper;
     private final EmployeeService employeeService;
     private final PhonNumberService phonNumberService;
-    private CompanyService companyService;
+    private final CompanyService companyService;
+    private final SessionUserService sessionUserService;
 
     @GetMapping("/company")
     public String viewCompanyDetails(Model model) {
@@ -51,11 +55,28 @@ public class EmployeeController {
     }
     @GetMapping(value = "/")
     public String index(HttpSession session, Model model) {
-        List<EmployeeView> employees = employeeService.getEmployees().stream().map(employeeMapper::toView).collect(
-            Collectors.toList());
-        model.addAttribute("employees", employees);
-        model.addAttribute("employee", new Employee());
         return "index";
+    }
+
+    @PostMapping("/loging")
+    public String addEmployee(@RequestParam(name = "username", required = false) String username,
+                              @RequestParam(name = "password", required = false) String password,
+                              HttpSession session) {
+        try {
+            // Attempt to log in the user
+            SessionUser sessionUser = sessionUserService.loging(username, password);
+
+            // If the login is successful, store the user's ID in the session as "token"
+            session.setAttribute("token", sessionUser.getId());
+
+            // Redirect the user to the "/employees" page
+            return "redirect:/employees";
+        } catch (Exception e) {
+            // Handle any exceptions that may occur during the login process
+            // You can customize the error handling based on the specific exception types
+            e.printStackTrace(); // You can log the error or display a friendly error message to the user
+            return "redirect:/"; // Redirect the user to a login page with an error parameter
+        }
     }
 
     @GetMapping(value = "/employees")
@@ -76,6 +97,11 @@ public class EmployeeController {
                          @RequestParam(name = "page", required = false) Integer page,
                          @RequestParam(name = "pageSize", required = false) Integer pageSize,
                          Model model) throws ParseException {
+        try {
+            checkSession(session);
+        }catch (Exception e) {
+            return "redirect:/";
+        }
         Company company = companyService.getByOne();
         model.addAttribute("company", company);
 
@@ -169,6 +195,7 @@ public class EmployeeController {
                          @RequestParam(name = "pageSize", required = false) Integer pageSize,
                          Model model) throws ParseException {
 
+
         FilterEmployee filterEmployee = new FilterEmployee();
         filterEmployee.setFirsName(firstName);
         filterEmployee.setSex(sex);
@@ -251,7 +278,12 @@ public class EmployeeController {
 
 
     @GetMapping("/employees/create")
-    public String addEmployeeUI(Model model) {
+    public String addEmployeeUI(Model model,HttpSession session ) {
+        try {
+            checkSession(session);
+        }catch (Exception e) {
+            return "redirect:/";
+        }
         model.addAttribute("createEmployee", new CreateEmployee());
         Company company = companyService.getByOne();
         model.addAttribute("company", company);
@@ -259,7 +291,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
-    public String showEmployeeDetails(@PathVariable("id") String id, Model model) {
+    public String showEmployeeDetails(HttpSession session, @PathVariable("id") String id, Model model) {
+        try {
+            checkSession(session);
+        }catch (Exception e) {
+            return "redirect:/";
+        }
         EmployeeView employee = employeeMapper.toView(employeeService.getEmployeeById(id));
         List<PhoneNumber> phoneNumbers = phonNumberService.findAllByEmployee_Id(employee.getId());
         model.addAttribute("employee", employee);
@@ -270,7 +307,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}/update")
-    public String showEmployeeUpdate(@PathVariable("id") String id, Model model) {
+    public String showEmployeeUpdate(HttpSession session, @PathVariable("id") String id, Model model) {
+        try {
+            checkSession(session);
+        }catch (Exception e) {
+            return "redirect:/";
+        }
         Employee employee = employeeService.getEmployeeById(id);
         model.addAttribute("createEmployee", new CreateEmployee());
         model.addAttribute("employee", employee);
@@ -307,4 +349,17 @@ public class EmployeeController {
         return "redirect:/employees";
     }
 
+
+    private Void checkSession(HttpSession session){
+        String token = (String) session.getAttribute("token");
+        System.out.println(token);
+        if (token == null) {
+            throw new RuntimeException("forfiden");
+        } else if (sessionUserService.getById(token) == null) {
+            throw new RuntimeException("forfiden");
+        }else if (sessionUserService.getById(token).getExpered().isBefore(Instant.now())) {
+            throw new RuntimeException("forfiden");
+        }
+        return null;
+    }
 }

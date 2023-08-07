@@ -1,6 +1,8 @@
 package com.hei.project2p1.validator;
 
 import com.hei.project2p1.modele.Employee;
+import com.hei.project2p1.modele.PhoneNumber;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Consumer;
@@ -19,6 +21,14 @@ public class CreateEmployeeValidator implements Consumer<Employee> {
     }
     if (employee.getLastName() == "") {
       throw new RuntimeException("lastname not null");
+    }
+    if (employee.getPhoneNumbers() != null) {
+      List<PhoneNumber> phoneNumbers = employee.getPhoneNumbers();
+      for (PhoneNumber p : phoneNumbers) {
+        if (p.getNumber().length() != 10) {
+          throw new RuntimeException("lastname not null");
+        }
+      }
     }
   }
 }

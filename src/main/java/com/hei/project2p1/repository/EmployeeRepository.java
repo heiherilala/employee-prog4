@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
+  public List<Employee> findAllByFirstName(String firstname);
 }

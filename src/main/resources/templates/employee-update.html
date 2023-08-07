@@ -1,3 +1,112 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">-->
+<!--  <title>Employee Management</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:insert="fragments/header :: header"></div>-->
+<!--<div style="height: 80px;"></div> &lt;!&ndash; Hauteur équivalente à la hauteur du header (incluant la marge py-3) &ndash;&gt;-->
+
+<!--<h2>Add Employee</h2>-->
+<!--<form th:action="@{/employeesAdd}" th:object="${createEmployee}" method="post" enctype="multipart/form-data" id="employeeForm">-->
+
+<!--  <label for="ref">Id:</label>-->
+<!--  <input class="form-control-plaintext" type="text" id="id" name="id" th:value="${employee.id}" th:readonly="${true}"><br>-->
+
+<!--  <label for="ref">Ref:</label>-->
+<!--  <input class="form-control-plaintext" type="text" id="ref" name="ref" th:value="${employee.ref}" th:readonly="${true}"><br>-->
+
+<!--  <label for="image">Image:</label>-->
+<!--  <input type="file" id="image" name="image"><br>-->
+
+<!--  <label for="firstName">First Name:</label>-->
+<!--  <input type="text" id="firstName" name="firstName" th:value="${employee.firstName}" required><br>-->
+
+<!--  <label for="lastName">Last Name:</label>-->
+<!--  <input type="text" id="lastName" name="lastName" th:value="${employee.lastName}" required><br>-->
+
+<!--  <label for="birthDate">Birth Date:</label>-->
+<!--  <input type="date" id="birthDate" name="birthDate" th:if="${employee.birthDate}" th:value="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}" required><br>-->
+
+<!--  <label for="sex">Sex:</label>-->
+<!--  <select id="sex" name="sex" th:value="${employee.sex}">-->
+<!--    <option value="M">M</option>-->
+<!--    <option value="F">F</option>-->
+<!--  </select><br>-->
+
+<!--  <label for="address">Adress:</label>-->
+<!--  <input type="text" id="address" name="address" th:value="${employee.address}"><br>-->
+
+<!--  <label for="personalEmail">Personal Email:</label>-->
+<!--  <input type="email" id="personalEmail" name="personalEmail"  th:value="${employee.personalEmail}" ><br>-->
+
+<!--  <label for="professionalEmail">Professional Email :</label>-->
+<!--  <input type="email" id="professionalEmail" name="professionalEmail" th:value="${employee.professionalEmail}" ><br>-->
+
+<!--  <label for="cinNumber">CIN Number:</label>-->
+<!--  <input type="text" id="cinNumber" name="cinNumber" th:value="${employee.cinNumber}"><br>-->
+
+
+<!--  <label for="cinCreateDate">CIN Create Date:</label>-->
+<!--  <input type="date" id="cinCreateDate" name="cinCreateDate" th:if="${employee.cinCreateDate}" th:value="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}" ><br>-->
+
+<!--  <label for="cinCreatePlace">CIN Create Place:</label>-->
+<!--  <input type="text" id="cinCreatePlace" name="cinCreatePlace" th:value="${employee.cinCreatePlace}"><br>-->
+
+<!--  <label for="position">Position:</label>-->
+<!--  <input type="text" id="position" name="position" th:value="${employee.position}"><br>-->
+
+<!--  <label for="childrenNumber">Children Number:</label>-->
+<!--  <input type="number" id="childrenNumber" name="childrenNumber" th:value="${employee.childrenNumber}"><br>-->
+
+<!--  <div>-->
+<!--    &lt;!&ndash; Conteneur pour afficher les numéros de téléphone &ndash;&gt;-->
+<!--    <div id="phoneNumbersContainer">-->
+
+<!--      <div th:each="onePhoneNumber : ${employee.phoneNumbers}">-->
+<!--        <label>Téléphone :</label>-->
+<!--        <input type="checkbox" name="phoneNumbers" th:value="${onePhoneNumber.numberCode + ';' + onePhoneNumber.number}" checked>-->
+<!--        <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>-->
+<!--        <span th:text="${'code : ' + onePhoneNumber.numberCode + '; number : ' + onePhoneNumber.number}"></span>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Champ pour ajouter un nouveau numéro de téléphone manuellement &ndash;&gt;-->
+<!--    <div>-->
+<!--      <label>Code pays :</label>-->
+<!--      <input type="text" name="newPhoneNumberCode">-->
+<!--      <label>numéro :</label>-->
+<!--      <input type="text" name="newPhoneNumber">-->
+<!--      <button type="button" onclick="addPhoneNumber()">Ajouter</button>-->
+<!--    </div>-->
+<!--  </div>-->
+
+
+
+
+<!--  <label for="hireDate">Hire Date:</label>-->
+<!--  <input type="date" id="hireDate" name="hireDate" th:value="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}" ><br>-->
+
+<!--  <label for="departureDate">Departure Date:</label>-->
+<!--  <input type="date" id="departureDate" name="departureDate" th:value="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}" ><br>-->
+
+
+
+
+<!--  <label for="cnapsNumber">CNAPS Number:</label>-->
+<!--  <input type="text" id="cnapsNumber" name="cnapsNumber" th:value="${employee.cnapsNumber}"><br>-->
+
+<!--  <button type="submit">Add employee</button>-->
+<!--</form>-->
+
+<!--<div th:insert="fragments/footer :: footer"></div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,109 +118,151 @@
 <div th:insert="fragments/header :: header"></div>
 <div style="height: 80px;"></div> <!-- Hauteur équivalente à la hauteur du header (incluant la marge py-3) -->
 
-<h2>Add Employee</h2>
-<form th:action="@{/employeesAdd}" th:object="${createEmployee}" method="post" enctype="multipart/form-data" id="employeeForm">
+<div class="container mt-4">
+  <h2 class="mb-4">Add Employee</h2>
+  <form th:action="@{/employeesAdd}" th:object="${createEmployee}" method="post" enctype="multipart/form-data" id="employeeForm">
+    <div class="form-group">
+      <label for="id">ID:</label>
+      <input class="form-control" type="text" id="id" name="id" th:value="${employee.id}" th:readonly="${true}">
+    </div>
 
-  <label for="ref">Id:</label>
-  <input class="form-control-plaintext" type="text" id="id" name="id" th:value="${employee.id}" th:readonly="${true}"><br>
+    <div class="form-group">
+      <label for="image">Image:</label>
+      <input type="file" id="image" name="image">
+    </div>
 
-  <label for="ref">Ref:</label>
-  <input class="form-control-plaintext" type="text" id="ref" name="ref" th:value="${employee.ref}" th:readonly="${true}"><br>
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input class="form-control" type="text" id="firstName" name="firstName" th:value="${employee.firstName}" required>
+    </div>
 
-  <label for="image">Image:</label>
-  <input type="file" id="image" name="image"><br>
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input class="form-control" type="text" id="lastName" name="lastName" th:value="${employee.lastName}" required>
+    </div>
 
-  <label for="firstName">First Name:</label>
-  <input type="text" id="firstName" name="firstName" th:value="${employee.firstName}" required><br>
+    <div class="form-group">
+      <label for="birthDate">Birth Date:</label>
+      <input class="form-control" type="date" id="birthDate" name="birthDate" th:if="${employee.birthDate}" th:value="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}" required>
+    </div>
 
-  <label for="lastName">Last Name:</label>
-  <input type="text" id="lastName" name="lastName" th:value="${employee.lastName}" required><br>
+    <div class="form-group">
+      <label for="sex">Sex:</label>
+      <select class="form-control" id="sex" name="sex" th:value="${employee.sex}">
+        <option value="M">M</option>
+        <option value="F">F</option>
+      </select>
+    </div>
 
-  <label for="birthDate">Birth Date:</label>
-  <input type="date" id="birthDate" name="birthDate" th:if="${employee.birthDate}" th:value="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}" required><br>
+    <div class="form-group">
+      <label for="address">Adress:</label>
+      <input class="form-control" type="text" id="address" name="address" th:value="${employee.address}">
+    </div>
 
-  <label for="sex">Sex:</label>
-  <select id="sex" name="sex" th:value="${employee.sex}">
-    <option value="M">M</option>
-    <option value="F">F</option>
-  </select><br>
+    <div class="form-group">
+      <label for="personalEmail">Personal Email:</label>
+      <input class="form-control" type="email" id="personalEmail" name="personalEmail" th:value="${employee.personalEmail}">
+    </div>
 
-  <label for="address">Adress:</label>
-  <input type="text" id="address" name="address" th:value="${employee.address}"><br>
+    <div class="form-group">
+      <label for="professionalEmail">Professional Email:</label>
+      <input class="form-control" type="email" id="professionalEmail" name="professionalEmail" th:value="${employee.professionalEmail}">
+    </div>
 
-  <label for="personalEmail">Personal Email:</label>
-  <input type="email" id="personalEmail" name="personalEmail"  th:value="${employee.personalEmail}" ><br>
+    <div class="form-group">
+      <label for="cinNumber">CIN Number:</label>
+      <input class="form-control" type="text" id="cinNumber" name="cinNumber" th:value="${employee.cinNumber}">
+    </div>
 
-  <label for="professionalEmail">Professional Email :</label>
-  <input type="email" id="professionalEmail" name="professionalEmail" th:value="${employee.professionalEmail}" ><br>
+    <div class="form-group">
+      <label for="cinCreateDate">CIN Create Date:</label>
+      <input class="form-control" type="date" id="cinCreateDate" name="cinCreateDate" th:if="${employee.cinCreateDate}" th:value="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}">
+    </div>
 
-  <label for="cinNumber">CIN Number:</label>
-  <input type="text" id="cinNumber" name="cinNumber" th:value="${employee.cinNumber}"><br>
+    <div class="form-group">
+      <label for="cinCreatePlace">CIN Create Place:</label>
+      <input class="form-control" type="text" id="cinCreatePlace" name="cinCreatePlace" th:value="${employee.cinCreatePlace}">
+    </div>
+
+    <div class="form-group">
+      <label for="position">Position:</label>
+      <input class="form-control" type="text" id="position" name="position" th:value="${employee.position}">
+    </div>
+
+    <div class="form-group">
+      <label for="childrenNumber">Children Number:</label>
+      <input class="form-control" type="number" id="childrenNumber" name="childrenNumber" th:value="${employee.childrenNumber}">
+    </div>
 
 
-  <label for="cinCreateDate">CIN Create Date:</label>
-  <input type="date" id="cinCreateDate" name="cinCreateDate" th:if="${employee.cinCreateDate}" th:value="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}" ><br>
+      <div>
+        <!-- Conteneur pour afficher les numéros de téléphone -->
+        <div id="phoneNumbersContainer">
 
-  <label for="cinCreatePlace">CIN Create Place:</label>
-  <input type="text" id="cinCreatePlace" name="cinCreatePlace" th:value="${employee.cinCreatePlace}"><br>
+          <div th:each="onePhoneNumber : ${employee.phoneNumbers}">
+            <label>Téléphone :</label>
+            <input type="checkbox" name="phoneNumbers" th:value="${onePhoneNumber.numberCode + ';' + onePhoneNumber.number}" checked>
+            <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
+            <span th:text="${'code : ' + onePhoneNumber.numberCode + '; number : ' + onePhoneNumber.number}"></span>
+          </div>
+        </div>
 
-  <label for="position">Position:</label>
-  <input type="text" id="position" name="position" th:value="${employee.position}"><br>
-
-  <label for="childrenNumber">Children Number:</label>
-  <input type="number" id="childrenNumber" name="childrenNumber" th:value="${employee.childrenNumber}"><br>
-
-  <div>
-    <!-- Conteneur pour afficher les numéros de téléphone -->
-    <div id="phoneNumbersContainer">
-
-      <div th:each="onePhoneNumber : ${employee.phoneNumbers}">
-        <label>Téléphone :</label>
-        <input type="checkbox" name="phoneNumbers" th:value="${onePhoneNumber.numberCode + ';' + onePhoneNumber.number}" checked>
-        <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
-        <span th:text="${'code : ' + onePhoneNumber.numberCode + '; number : ' + onePhoneNumber.number}"></span>
+        <!-- Champ pour ajouter un nouveau numéro de téléphone manuellement -->
+        <div>
+          <label>Code pays :</label>
+          <input type="text" name="newPhoneNumberCode">
+          <label>numéro :</label>
+          <input type="text" name="newPhoneNumber">
+          <button type="button" onclick="addPhoneNumber()">Ajouter</button>
+        </div>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="form-group">
+      <label for="hireDate">Hire Date:</label>
+      <input class="form-control" type="date" id="hireDate" name="hireDate" th:value="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}">
     </div>
 
-    <!-- Champ pour ajouter un nouveau numéro de téléphone manuellement -->
-    <div>
-      <label>Code pays :</label>
-      <input type="text" name="newPhoneNumberCode">
-      <label>numéro :</label>
-      <input type="text" name="newPhoneNumber">
-      <button type="button" onclick="addPhoneNumber()">Ajouter</button>
+    <div class="form-group">
+      <label for="departureDate">Departure Date:</label>
+      <input class="form-control" type="date" id="departureDate" name="departureDate" th:value="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}">
     </div>
-  </div>
+
+    <div class="form-group">
+      <label for="csp">CSP:</label>
+      <select class="form-control" id="csp" name="csp">
+            <option value="M1_1A">M1_1A</option>
+            <option value="M2_1B">M2_1B</option>
+            <option value="OS1_2A">OS1_2A</option>
+            <option value="OS2_2B">OS2_2B</option>
+            <option value="OS3_3">OS3_3</option>
+            <option value="OP1">OP1</option>
+            <option value="OP1A_3B">OP1A_3B</option>
+            <option value="OP1B_4A">OP1B_4A</option>
+            <option value="OP2B_5A">OP2B_5A</option>
+            <option value="OP3_5B">OP3_5B</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="cnapsNumber">CNAPS Number:</label>
+      <input class="form-control" type="text" id="cnapsNumber" name="cnapsNumber" th:value="${employee.cnapsNumber}">
+    </div>
 
 
-
-
-  <label for="hireDate">Hire Date:</label>
-  <input type="date" id="hireDate" name="hireDate" th:if="${employee.hireDate}" th:value="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}" ><br>
-
-  <label for="departureDate">Departure Date:</label>
-  <input type="date" id="departureDate" name="departureDate" th:if="${employee.departureDate}" th:value="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}" ><br>
-
-  <label for="csp">CSP:</label>
-  <select id="csp" name="csp">
-    <option value="M1_1A">M1_1A</option>
-    <option value="M2_1B">M2_1B</option>
-    <option value="OS1_2A">OS1_2A</option>
-    <option value="OS2_2B">OS2_2B</option>
-    <option value="OS3_3">OS3_3</option>
-    <option value="OP1">OP1</option>
-    <option value="OP1A_3B">OP1A_3B</option>
-    <option value="OP1B_4A">OP1B_4A</option>
-    <option value="OP2B_5A">OP2B_5A</option>
-    <option value="OP3_5B">OP3_5B</option>
-  </select><br>
-
-
-  <label for="cnapsNumber">CNAPS Number:</label>
-  <input type="text" id="cnapsNumber" name="cnapsNumber" th:value="${employee.cnapsNumber}"><br>
-
-  <button type="submit">Add employee</button>
-</form>
+    <button type="submit" class="btn btn-primary">Add Employee</button>
+  </form>
+</div>
 
 <div th:insert="fragments/footer :: footer"></div>
 <script>
@@ -127,7 +278,7 @@
         <label>Téléphone :</label>
         <input type="checkbox" name="phoneNumbers" value="${newPhoneNumberCodeValue};${newPhoneNumberValue}" checked>
         <button type="button" onclick="removePhoneNumber(this)">Supprimer</button>
-        <label>"cede : ${newPhoneNumberCodeValue};  : ${newPhoneNumberValue}"</label>
+        <label>"cede : ${newPhoneNumberCodeValue}; numbur: ${newPhoneNumberValue}"</label>
       `;
       container.appendChild(newPhoneNumber);
       newPhoneNumberInput.value = ''; // Réinitialiser le champ pour le prochain numéro

@@ -1,60 +1,186 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <link href="css/employeeStyles.css" rel="stylesheet1"/>-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">-->
+<!--    <title>Employee Management</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:insert="fragments/header :: header"></div>-->
+
+<!--&lt;!&ndash; Ajout d'une marge équivalente à la hauteur du header &ndash;&gt;-->
+<!--<div style="height: 80px;"></div>-->
+
+<!--<div class="container mt-4" >-->
+<!--    <h1>Employee Details</h1>-->
+<!--    <div>-->
+<!--        &lt;!&ndash; Détails de l'employé ici &ndash;&gt;-->
+<!--        <p>ID: <span th:text="${employee.id}"></span></p>-->
+<!--        <p>First Name: <span th:text="${employee.firstName}"></span></p>-->
+<!--        <p>Last Name: <span th:text="${employee.lastName}"></span></p>-->
+<!--        <p>Birth Date: <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>-->
+<!--        <p>Ref: <span th:text="${employee.ref}"></span></p>-->
+<!--        <p th:if="${employee.sex != null}">Sex: <span th:text="${employee.sex}"></span></p>-->
+<!--        <p th:if="${employee.address != null}">Address: <span th:text="${employee.address}"></span></p>-->
+<!--        <p th:if="${employee.personalEmail != null}">Personal Email: <span th:text="${employee.personalEmail}"></span></p>-->
+<!--        <p th:if="${employee.professionalEmail != null}">Professional Email: <span th:text="${employee.professionalEmail}"></span></p>-->
+<!--        <p th:if="${employee.cinNumber != null}">CIN Number: <span th:text="${employee.cinNumber}"></span></p>-->
+<!--        <p th:if="${employee.cinCreateDate != null}">CIN Create Date: <span th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></span></p>-->
+<!--        <p th:if="${employee.cinCreatePlace != null}">CIN Create Place: <span th:text="${employee.cinCreatePlace}"></span></p>-->
+<!--        <p th:if="${employee.position != null}">Position: <span th:text="${employee.position}"></span></p>-->
+<!--        <p th:if="${employee.childrenNumber != null}">Children Number: <span th:text="${employee.childrenNumber}"></span></p>-->
+<!--        <p th:if="${employee.hireDate != null}">Hire Date: <span th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></span></p>-->
+<!--        <p th:if="${employee.departureDate != null}">Departure Date: <span th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></span></p>-->
+<!--        <p th:if="${employee.csp != null}">CSP: <span th:text="${employee.csp}"></span></p>-->
+<!--        <p th:if="${employee.cnapsNumber != null}">CNAPS Number: <span th:text="${employee.cnapsNumber}"></span></p>-->
+<!--        <div th:if="${!phoneNumbers.isEmpty()}">-->
+<!--            <p>Phone Numbers: </p>-->
+<!--            <div th:each="phonNumber : ${phoneNumbers}" >-->
+<!--                <samp th:text="${ phonNumber.numberCode}"></samp><samp th:text="${ phonNumber.number}"></samp>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <p>Passport photo:</p>-->
+<!--        <div th:if="${employee.image != null}">-->
+<!--            &lt;!&ndash; Utilisation de la chaîne de base64 pour afficher l'image avec une limite de hauteur &ndash;&gt;-->
+<!--            <img th:src="'data:image/png;base64,' + ${employee.image}" alt="Photo" class="img-fluid max-height-60">-->
+<!--        </div>-->
+<!--        <div th:unless="${employee.image != null}">-->
+<!--            <p>Aucune image</p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <a href="/">Back to Employee List</a>-->
+<!--</div>-->
+
+<!--<div th:insert="fragments/footer :: footer"></div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <link href="css/employeeStyles.css" rel="stylesheet1"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <title>Employee Management</title>
+    <title>Employee Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .cv-container {
+            margin-top: 50px;
+            padding: 20px;
+        }
+
+        .cv-photo {
+            max-width: 150px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .cv-heading {
+            border-bottom: 2px solid #007bff;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+        }
+
+        .cv-section {
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
-<div th:insert="fragments/header :: header"></div>
+<div class="container cv-container">
+    <div class="text-center">
+        <img th:src="'data:image/png;base64,' + ${employee.image}" alt="Photo" class="cv-photo img-fluid">
+    </div>
+    <div class="text-center cv-heading">
+        <h1 class="text-primary">Employee Profile</h1>
+    </div>
 
-<!-- Ajout d'une marge équivalente à la hauteur du header -->
-<div style="height: 80px;"></div>
-
-<div class="container mt-4" >
-    <h1>Employee Details</h1>
-    <div>
-        <!-- Détails de l'employé ici -->
-        <p>ID: <span th:text="${employee.id}"></span></p>
-        <p>First Name: <span th:text="${employee.firstName}"></span></p>
-        <p>Last Name: <span th:text="${employee.lastName}"></span></p>
-        <p>Birth Date: <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>
-        <p>Ref: <span th:text="${employee.ref}"></span></p>
-        <p th:if="${employee.sex != null}">Sex: <span th:text="${employee.sex}"></span></p>
-        <p th:if="${employee.address != null}">Address: <span th:text="${employee.address}"></span></p>
-        <p th:if="${employee.personalEmail != null}">Personal Email: <span th:text="${employee.personalEmail}"></span></p>
-        <p th:if="${employee.professionalEmail != null}">Professional Email: <span th:text="${employee.professionalEmail}"></span></p>
-        <p th:if="${employee.cinNumber != null}">CIN Number: <span th:text="${employee.cinNumber}"></span></p>
-        <p th:if="${employee.cinCreateDate != null}">CIN Create Date: <span th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></span></p>
-        <p th:if="${employee.cinCreatePlace != null}">CIN Create Place: <span th:text="${employee.cinCreatePlace}"></span></p>
-        <p th:if="${employee.position != null}">Position: <span th:text="${employee.position}"></span></p>
-        <p th:if="${employee.childrenNumber != null}">Children Number: <span th:text="${employee.childrenNumber}"></span></p>
-        <p th:if="${employee.hireDate != null}">Hire Date: <span th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></span></p>
-        <p th:if="${employee.departureDate != null}">Departure Date: <span th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></span></p>
-        <p th:if="${employee.csp != null}">CSP: <span th:text="${employee.csp}"></span></p>
-        <p th:if="${employee.cnapsNumber != null}">CNAPS Number: <span th:text="${employee.cnapsNumber}"></span></p>
-        <div th:if="${!phoneNumbers.isEmpty()}">
-            <p>Phone Numbers: </p>
-            <div th:each="phonNumber : ${phoneNumbers}" >
-                <samp th:text="${ phonNumber.numberCode}"></samp><samp th:text="${ phonNumber.number}"></samp>
+    <div class="cv-section">
+        <h3 class="cv-heading">Personal Information</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>ID:</strong> <span th:text="${employee.id}"></span></p>
+                <p><strong>Name:</strong> <span th:text="${employee.firstName}"></span> <span th:text="${employee.lastName}"></span></p>
+                <p><strong>Birth Date:</strong> <span th:text="${#dates.format(employee.birthDate, 'yyyy-MM-dd')}"></span></p>
+                <p th:if="${employee.sex != null}"><strong>Sex:</strong> <span th:text="${employee.sex}"></span></p>
+            </div>
+            <div class="col-md-6">
+                <p th:if="${employee.address != null}"><strong>Address:</strong> <span th:text="${employee.address}"></span></p>
+                <p th:if="${employee.personalEmail != null}"><strong>Personal Email:</strong> <span th:text="${employee.personalEmail}"></span></p>
+                <!-- Add more personal details here -->
             </div>
         </div>
-        <p>Passport photo:</p>
-        <div th:if="${employee.image != null}">
-            <!-- Utilisation de la chaîne de base64 pour afficher l'image avec une limite de hauteur -->
-            <img th:src="'data:image/png;base64,' + ${employee.image}" alt="Photo" class="img-fluid max-height-60">
-        </div>
-        <div th:unless="${employee.image != null}">
-            <p>Aucune image</p>
+    </div>
+
+    <div class="cv-section">
+        <h3 class="cv-heading">Contact</h3>
+        <div class="list-group">
+            <div th:each="phoneNumber : ${phoneNumbers}" class="list-group-item">
+                <span class="font-weight-bold" th:text="${phoneNumber.numberCode}"></span><span th:text="${phoneNumber.number}"></span>
+            </div>
         </div>
     </div>
-    <a href="/">Back to Employee List</a>
-</div>
 
-<div th:insert="fragments/footer :: footer"></div>
+    <!-- ... -->
+
+    <div class="cv-section">
+        <h3 class="cv-heading">Identity</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>CIN Number:</strong> <span th:text="${employee.cinNumber}"></span></p>
+                <p><strong>CIN Create Date:</strong> <span th:text="${#dates.format(employee.cinCreateDate, 'yyyy-MM-dd')}"></span></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>CIN Create Place:</strong> <span th:text="${employee.cinCreatePlace}"></span></p>
+                <!-- Add more identity details here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="cv-section">
+        <h3 class="cv-heading">Employment Details</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Position:</strong> <span th:text="${employee.position}"></span></p>
+                <p><strong>Hire Date:</strong> <span th:text="${#dates.format(employee.hireDate, 'yyyy-MM-dd')}"></span></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Departure Date:</strong> <span th:text="${#dates.format(employee.departureDate, 'yyyy-MM-dd')}"></span></p>
+                <!-- Add more employment details here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="cv-section">
+        <h3 class="cv-heading">Additional Details</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>CSP:</strong> <span th:text="${employee.csp}"></span></p>
+                <!-- Add more additional details here -->
+            </div>
+            <div class="col-md-6">
+                <p><strong>CNAPS Number:</strong> <span th:text="${employee.cnapsNumber}"></span></p>
+                <!-- Add more additional details here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ... -->
+
+
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-secondary">Back to Employee List</a>
+    </div>
+</div>
 </body>
 </html>
+
 
 
 
